@@ -1,0 +1,4 @@
+interface:
+  display_name: "WeRSS 早晚报"
+  short_description: "为 D91 网站生成 WeRSS 新增文章早晚报报告"
+  default_prompt: "Use werss-mp-briefing to generate an objective WeRSS morning or evening briefing for the D91 /mp site."
