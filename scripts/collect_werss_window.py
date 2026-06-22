@@ -1,22 +1,31 @@
 #!/usr/bin/env python3
-"""Collect WeRSS articles for a created_at window."""
+"""Collect WeRSS articles for an original publish_time window."""
 
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
 import json
 import sqlite3
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--db", required=True, help="Path to WeRSS db.db")
-    parser.add_argument("--start", required=True, help="Window start, SQLite datetime text")
-    parser.add_argument("--end", required=True, help="Window end, SQLite datetime text")
+    parser.add_argument("--start", required=True, help="Window start in Asia/Shanghai local time")
+    parser.add_argument("--end", required=True, help="Window end in Asia/Shanghai local time")
     parser.add_argument("--output", help="Output JSON path; stdout when omitted")
     parser.add_argument("--limit", type=int, default=500)
     return parser.parse_args()
+
+
+def parse_local_timestamp(value: str) -> int:
+    dt = datetime.fromisoformat(value.replace(" ", "T"))
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=ZoneInfo("Asia/Shanghai"))
+    return int(dt.timestamp())
 
 
 def main() -> int:
@@ -24,6 +33,8 @@ def main() -> int:
     db_path = Path(args.db).expanduser()
     if not db_path.exists():
         raise SystemExit(f"WeRSS DB not found: {db_path}")
+    start_ts = parse_local_timestamp(args.start)
+    end_ts = parse_local_timestamp(args.end)
     conn = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
     conn.row_factory = sqlite3.Row
     with conn:
@@ -34,15 +45,16 @@ def main() -> int:
                    substr(a.content, 1, 120000) AS content_excerpt
             FROM articles a
             LEFT JOIN feeds f ON f.id = a.mp_id
-            WHERE a.created_at > ? AND a.created_at <= ?
-            ORDER BY a.created_at ASC, COALESCE(a.publish_time, 0) ASC
+            WHERE COALESCE(a.publish_time, 0) > ? AND COALESCE(a.publish_time, 0) <= ?
+            ORDER BY COALESCE(a.publish_time, 0) ASC, a.updated_at ASC, a.created_at ASC
             LIMIT ?
             """,
-            (args.start, args.end, args.limit),
+            (start_ts, end_ts, args.limit),
         ).fetchall()
     payload = {
         "window_start": args.start,
         "window_end": args.end,
+        "time_basis": "publish_time",
         "article_count": len(rows),
         "articles": [dict(row) for row in rows],
     }

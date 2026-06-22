@@ -7,8 +7,8 @@ The briefing belongs to the website module, not the Feishu daily report project.
 - Keep the API path `/v1/mp/reports`.
 - Keep the table `mp_article_reports`; add compatible nullable columns for structured report fields.
 - Read WeRSS SQLite from configured `WERSS_DB_PATH`.
-- Use `articles.created_at` for window inclusion.
-- Use `publish_time` only for display.
+- Use `articles.publish_time` for window inclusion. It is the original article time stored as Unix seconds and must be compared against fixed Asia/Shanghai slot cutoffs.
+- Use `created_at` and `updated_at` only as crawler/database record metadata.
 - Keep `window_end` fixed to the report slot cutoff (`08:30` or `20:30`); never extend the report because generation ran later.
 - Write Markdown to `MP_REPORT_ARCHIVE_ROOT`.
 - Return structured JSON fields for frontend rendering; do not ask the frontend to parse Markdown.

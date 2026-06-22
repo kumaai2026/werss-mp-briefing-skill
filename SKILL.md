@@ -10,7 +10,7 @@ description: Generate objective morning/evening WeRSS briefing reports for the D
 Generate a site-facing briefing from WeRSS articles fetched in the fixed report slot window.
 
 - Scope only D91 `/mp` 新增文章报告; do not use or extend the Feishu/Bitable daily report workflow.
-- Use WeRSS `articles.created_at` as the inclusion window. `publish_time` is display metadata only.
+- Use WeRSS `articles.publish_time` as the inclusion window. It is the original article time stored as Unix seconds. `created_at` and `updated_at` are crawler/database record times and must not decide report membership.
 - Keep report windows fixed to slot cutoffs. Delayed generation changes `generated_at`, not `window_end`.
 - Derive summaries and evidence from article body content. Ignore WeRSS `description` unless the body is empty and label the limitation.
 - Include original source links for every article used.
@@ -36,7 +36,7 @@ Generate a site-facing briefing from WeRSS articles fetched in the fixed report 
 
 1. Identify the report slot: `morning` = 08:30, `evening` = 20:30, Asia/Shanghai.
 2. Set `window_start` to the previous slot cutoff and `window_end` to the current slot cutoff. Morning covers previous-day 20:30 to current-day 08:30; evening covers current-day 08:30 to current-day 20:30.
-3. Collect rows from WeRSS SQLite where `created_at > window_start AND created_at <= window_end`.
+3. Collect rows from WeRSS SQLite where `publish_time > window_start_unix_seconds AND publish_time <= window_end_unix_seconds`, interpreting `window_start` and `window_end` in Asia/Shanghai.
 4. For each article, keep `id`, `title`, `account_name`, `url`, `publish_time`, `created_at`, `updated_at`, and enough body content to cite.
 5. Build source ids (`S1`, `S2`, ...). Every table row and detail section must reference one or more source ids.
 6. Run a source verification pass:

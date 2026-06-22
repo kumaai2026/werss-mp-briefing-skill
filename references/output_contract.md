@@ -121,5 +121,6 @@ These phrases are too generic for the report module. Replace them with a direct 
 
 ## Window Semantics
 
-- `window_start` and `window_end` are fixed slot boundaries based on WeRSS `articles.created_at`.
+- `window_start` and `window_end` are fixed slot boundaries in Asia/Shanghai. Report membership is based on WeRSS `articles.publish_time` converted to those boundaries.
+- `created_at` and `updated_at` are crawler/database record times. They may be displayed or audited as fetch metadata, but they must not decide whether an article belongs to a report window.
 - `generated_at` records when the report was actually produced and may be later than `window_end`.

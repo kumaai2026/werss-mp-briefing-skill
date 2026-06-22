@@ -1,10 +1,18 @@
 {
   "window_start": "2026-06-21T20:30:00",
   "window_end": "2026-06-22T08:30:00",
-  "article_count": 0,
-  "account_count": 0,
-  "themes": [],
+  "time_basis": "publish_time",
+  "article_count": 43,
+  "account_count": 24,
+  "themes": [
+    "金融市场与公司经营",
+    "半导体设备、封装与材料",
+    "AI 模型、Agent 与应用产品",
+    "AI 算力与基础设施",
+    "产品工程与数据基础设施",
+    "政策、安全与国际议题"
+  ],
   "quality_status": "warning",
-  "quality_warning_count": 1,
+  "quality_warning_count": 4,
   "public_problem_counts": {}
 }
