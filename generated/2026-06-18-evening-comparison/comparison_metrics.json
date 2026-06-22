@@ -1,5 +1,5 @@
 {
-  "old_generated_body_phrase_counts": {
+  "old_counts": {
     "核心观点": 3,
     "核心变化": 5,
     "判断依据在于": 5,
@@ -8,16 +8,23 @@
     "关键证据在于": 1,
     "商业化叙事": 2,
     "目标价": 3,
-    "趋势": 3
+    "趋势": 3,
+    "…": 2
   },
-  "new_generated_body_phrase_counts": {},
-  "new_validator_ok": true,
+  "new_counts": {},
   "new_quality_status": "warning",
   "new_quality_warnings": [
-    "单一来源主题 1 个，已按事实摘录处理。",
     "未形成跨来源结论的主题 1 个，未写作板块层面的方向判断。",
     "小样本结论已降级：1 个主题按来源摘录或有限归纳处理。",
     "口语证据已清洗为正式转述。"
+  ],
+  "new_themes": [
+    "半导体设备、封装与材料",
+    "金融市场与公司经营",
+    "AI 模型、Agent 与应用产品",
+    "AI 算力与基础设施",
+    "产品工程与数据基础设施",
+    "政策、安全与国际议题"
   ],
   "article_count": 76,
   "account_count": 32
