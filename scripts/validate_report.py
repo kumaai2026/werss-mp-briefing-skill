@@ -55,6 +55,20 @@ COLLOQUIAL_PHRASES = (
     "一项项",
     "……",
     "…",
+    "比如，我",
+    "试探性激将",
+    "过程就不展示",
+    "并且当然",
+    "我一查",
+    "我本来顺手",
+    "为几个数字较真",
+)
+LOW_SIGNAL_SUMMARY_PHRASES = (
+    "公开发表于",
+    "原始内容参考",
+    "内容提要",
+    "youtube.com",
+    "youtu.be",
 )
 NUMBER_RE = re.compile(r"\d+(?:\.\d+)?\s*(?:%|pct|bp|bps|万|亿|元|美元|人民币|GB|TB|PB|MW|GW|kW|W|卡时|颗|篇|个|家|倍)?")
 SOURCE_LINE_RE = re.compile(r"^- \[S\d+\] .+（公众号：.+）$")
@@ -111,10 +125,27 @@ def main() -> int:
     for phrase in COLLOQUIAL_PHRASES:
         if phrase in generated_text:
             findings.append(f"colloquial phrase: {phrase}")
+    for phrase in LOW_SIGNAL_SUMMARY_PHRASES:
+        if phrase in generated_text:
+            findings.append(f"low-signal summary phrase: {phrase}")
     if re.search(r"[?？]", generated_text):
         findings.append("rhetorical question punctuation")
     markdown = str(payload.get("report_markdown") or "")
     if markdown:
+        if "生成时间：" in markdown:
+            findings.append("markdown exposes generated time")
+        if "新增文章：" in markdown:
+            findings.append("markdown uses ambiguous 新增文章 metadata")
+        if "说明：本报告为客观信息整理" in markdown:
+            findings.append("markdown contains public disclaimer")
+        if "| 主题 | 要点摘要 | 来源 |" in markdown:
+            findings.append("markdown uses old summary table heading")
+        if (payload.get("article_count") or 0) > 0 and "| 主题 | 摘要 | 来源 |" not in markdown:
+            findings.append("markdown missing summary table heading")
+        if (payload.get("article_count") or 0) > 0 and ("收录文章：" not in markdown or "来源公众号：" not in markdown):
+            findings.append("markdown missing collection/source account metadata")
+        if (payload.get("article_count") or 0) > 0 and "引用编号：" not in markdown:
+            findings.append("markdown missing source id explanation")
         if "## 事实摘录与有限归纳" in markdown:
             findings.append("markdown uses old detail heading")
         if "## 来源清单" in markdown:

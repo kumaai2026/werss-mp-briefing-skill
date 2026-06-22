@@ -16,7 +16,7 @@ Array of objects:
 
 - `theme`: same topic name used in the table when possible, with the same primary-subject classification rule.
 - `summary`: objective finite-sample summary from referenced article bodies. It must contain a concrete object, action, number, or boundary. If evidence points already contain the useful facts, keep this to one short boundary sentence rather than adding a generic setup paragraph.
-- `evidence_points`: array of `{ "text": "...", "sources": ["S1"] }`.
+- `evidence_points`: array of `{ "text": "...", "sources": ["S1"] }`. Optional `quote` or `is_quote` may be true only when `text` intentionally preserves a direct original sentence for blockquote rendering.
 - `sources`: unique source ids used by this detail section.
 - `source_count`: count of unique source ids.
 - `account_count`: count of unique source accounts.
@@ -54,12 +54,18 @@ Do not render this field as a public website section by default. Use it together
 Required section order:
 
 1. `# YYYY-MM-DD 早报/晚报`
-2. Metadata lines: report window, generated time, article count, account count.
-3. `## 要点速览`: Markdown table with `主题 | 要点摘要 | 来源`.
+2. Metadata lines:
+   - `报告窗口：` with readable Chinese date/time, using same-day `08:30-20:30` or cross-day `至` format, and `（北京时间）`.
+   - `收录文章：X 篇；来源公众号：Y 个`.
+   - `引用编号：S1、S2 等为本文内部引用编号，对应文末“引用来源”。`
+   Do not render `生成时间`, `新增文章：`, or public disclaimers.
+3. `## 要点速览`: Markdown table with `主题 | 摘要 | 来源`.
 4. `## 摘要速读`: one subsection per detail, each with cited evidence bullets. Do not insert generic theme-opening paragraphs such as `本组文章的主线是...`, `需要分开看...`, `不替代交易结论`, or `下方逐篇列出代表文章主旨`; if the evidence bullets already carry the information, omit the paragraph.
 5. `## 引用来源`: source ids with original links, formatted as `- [S1] [文章标题](原文链接)（公众号：账号）`. Do not append publish timestamps in this public source list.
 
 Do not render `## 信息边界` in the final Markdown report. Keep generation limits, source-level warnings, secondary-only evidence, duplicate-source notes, and empty/body-missing warnings in `quality_warnings_json` and optional `source_audit_json` for internal review.
+
+If a public evidence point intentionally keeps an exact original sentence, render it as a Markdown blockquote with its source id, for example `> 原句。 [S1]`. Otherwise use a formal paraphrase.
 
 ## Prohibited Output
 
@@ -102,10 +108,24 @@ Do not generate colloquial, emotional, or headline-like wording:
 - `这才`
 - `啥`
 - `一项项`
+- `比如，我`
+- `我一查`
+- `我本来顺手`
+- `为几个数字较真`
+- `试探性激将`
+- `过程就不展示`
+- `并且当然`
 - `……`
 - `？`
 
 Source titles may contain finance terms, but generated prose must stay descriptive.
+
+Do not expose low-signal metadata or crawler/source notes as article summaries:
+
+- `公开发表于`
+- `原始内容参考`
+- `内容提要`
+- YouTube or other raw URL boilerplate unless the URL itself is the fact being discussed.
 
 ## Theme Classification
 

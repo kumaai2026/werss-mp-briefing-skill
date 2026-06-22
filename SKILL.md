@@ -12,6 +12,7 @@ Generate a site-facing briefing from WeRSS articles fetched in the fixed report 
 - Scope only D91 `/mp` 新增文章报告; do not use or extend the Feishu/Bitable daily report workflow.
 - Use WeRSS `articles.publish_time` as the inclusion window. It is the original article time stored as Unix seconds. `created_at` and `updated_at` are crawler/database record times and must not decide report membership.
 - Keep report windows fixed to slot cutoffs. Delayed generation changes `generated_at`, not `window_end`.
+- Public report metadata must use readable Chinese labels: `报告窗口：2026年6月20日 08:30-20:30（北京时间）` or cross-day `至` format, and `收录文章：X 篇；来源公众号：Y 个`. Do not render `生成时间` in the public report.
 - Derive summaries and evidence from article body content. Ignore WeRSS `description` unless the body is empty and label the limitation.
 - Include original source links for every article used.
 - Treat WeRSS article body as the default source of truth. When the body is missing, too short, or only a secondary digest, label that limitation instead of writing as if the original was verified.
@@ -28,7 +29,10 @@ Generate a site-facing briefing from WeRSS articles fetched in the fixed report 
   - `cross_source_pattern`: at least three sources from at least two accounts; only then use limited phrasing such as `本时段样本显示`.
 - Prefer concrete facts, differences, and source boundaries over abstract explanations. If evidence bullets already contain the useful facts, do not add a generic introductory summary.
 - In the public Markdown/HTML report, name the detail section `摘要速读`, not `事实摘录与有限归纳`. Do not render generic theme-opening paragraphs or disclaimer-like sentences such as `下方逐篇列出代表文章主旨`, `不替代交易结论`, or `不外推到板块或行业层面`.
-- Name the source section `引用来源`. Render each public source as `- [S1] [文章标题](原文链接)（公众号：账号）`; do not append publish timestamps in that source list.
+- Name the summary table column `摘要`, not `要点摘要`.
+- Name the source section `引用来源`. Render each public source as `- [S1] [文章标题](原文链接)（公众号：账号）`; do not append publish timestamps in that source list. Add a short metadata note explaining that `S1`, `S2` are internal source ids mapped to `引用来源`.
+- Do not render public disclaimers such as `说明：本报告为客观信息整理，不提供行动建议`.
+- If a public evidence point intentionally uses a direct source sentence, render it as a Markdown blockquote or HTML `<blockquote>`; otherwise use formal paraphrase.
 - Use formal research-record style. Clean public evidence bullets to remove colloquial, emotional, headline-like, or rhetorical wording while preserving entities, numbers, dates, and source ids.
 - Do not provide investment advice or action language such as `投资建议`, `推荐`, `买入`, `关注方向`, or `配置建议`.
 - Produce two synchronized artifacts:
@@ -99,6 +103,9 @@ python3 scripts/validate_report.py /tmp/report.json
 - Public report text must not contain over-generalization phrases such as `核心变化`, `趋势`, `行业格局`, `商业化叙事`, `产业链支撑`, or `价值重估`.
 - Public report text must not contain empty templates such as `判断依据在于`, `是否支撑`, `这些信息支持的结论限于`, or `关键证据在于`.
 - Public report text must not contain colloquial or emotional wording such as `狂烧`, `这才`, `啥`, `一项项`, repeated ellipses, or rhetorical questions.
+- Public report Markdown/HTML must not render `生成时间`, `新增文章：`, or the disclaimer `说明：本报告为客观信息整理，不提供行动建议`.
+- Public report Markdown/HTML must use `收录文章：X 篇；来源公众号：Y 个`, table header `主题 | 摘要 | 来源`, and a short explanation of internal source ids such as `S1`.
+- Public report text must not expose low-signal metadata snippets such as `公开发表于`, `原始内容参考`, `内容提要`, or first-person process fragments such as `比如，我`, `我一查`, `我本来顺手`, `试探性激将`, `过程就不展示`, `并且当然`.
 - Markdown and JSON must describe the same title, window, source ids, and core sections.
 - Keep evidence-boundary disclosures in `quality_warnings_json` and optional `source_audit_json`; do not render a public `信息边界` section in the final Markdown report unless the user explicitly asks for a debug/audit view.
 - `quality_warnings_json` must include counts for single-source themes, themes without cross-source conclusions, and themes downgraded to fact excerpts.
