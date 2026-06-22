@@ -29,9 +29,11 @@ Generate a site-facing briefing from WeRSS articles fetched in the fixed report 
   - `cross_source_pattern`: at least three sources from at least two accounts; only then use limited phrasing such as `本时段样本显示`.
 - Prefer concrete facts, differences, and source boundaries over abstract explanations. If evidence bullets already contain the useful facts, do not add a generic introductory summary.
 - `摘要速读` is not a one-sentence topic label. Each public evidence bullet should extract the article's valuable contents: named counterparties, product routes, technical parameters, quantified targets, constraints, or stated cause-effect links when present in the body. Avoid bullets that only say the article `讨论/介绍/复盘` a topic without the actual facts.
+- Use an article-card intermediate layer when model-assisted summarization is enabled. Each card should contain `main_point`, `key_facts`, `entities`, `topic_hint`, and `quality_flags`. If model output is unavailable or invalid, fall back to deterministic extraction and keep the same public contract.
 - In the public Markdown/HTML report, name the detail section `摘要速读`, not `事实摘录与有限归纳`. Do not render generic theme-opening paragraphs or disclaimer-like sentences such as `下方逐篇列出代表文章主旨`, `不替代交易结论`, or `不外推到板块或行业层面`.
 - Name the summary table column `摘要`, not `要点摘要`.
-- Name the source section `引用来源`. Render each public source as `- [S1] [文章标题](原文链接)（公众号：账号）`; do not append publish timestamps in that source list. Add a short metadata note explaining that `S1`, `S2` are internal source ids mapped to `引用来源`.
+- Public citations must use numeric paper-style labels such as `[1]`, `[2]`, and `[3]`; do not expose internal ids such as `S1` or `[S1]` in public Markdown/HTML. Add a short note: `引用说明：文中方括号数字对应文末“参考文献”。`
+- Name the public source section `参考文献`. Render each public source as `[1] 公众号名. 文章标题[EB/OL]. 微信公众号. 原文链接`; do not append publish timestamps in that public reference list.
 - Do not render public disclaimers such as `说明：本报告为客观信息整理，不提供行动建议`.
 - If a public evidence point intentionally uses a direct source sentence, render it as a Markdown blockquote or HTML `<blockquote>`; otherwise use formal paraphrase.
 - Use formal research-record style. Clean public evidence bullets to remove colloquial, emotional, headline-like, or rhetorical wording while preserving entities, numbers, dates, and source ids.
@@ -46,7 +48,7 @@ Generate a site-facing briefing from WeRSS articles fetched in the fixed report 
 2. Set `window_start` to the previous slot cutoff and `window_end` to the current slot cutoff. Morning covers previous-day 20:30 to current-day 08:30; evening covers current-day 08:30 to current-day 20:30.
 3. Collect rows from WeRSS SQLite where `publish_time > window_start_unix_seconds AND publish_time <= window_end_unix_seconds`, interpreting `window_start` and `window_end` in Asia/Shanghai.
 4. For each article, keep `id`, `title`, `account_name`, `url`, `publish_time`, `created_at`, `updated_at`, and enough body content to cite.
-5. Build source ids (`S1`, `S2`, ...). Every table row and detail section must reference one or more source ids.
+5. Build internal source ids (`S1`, `S2`, ...) for validation and compatibility, and also attach public `citation_index` / `citation_label` values such as `1` / `[1]`. Every table row and detail section must reference one or more internal source ids, but public rendering must map them to numeric labels.
 6. Assign themes using primary-subject classification:
    - Treat strong domain anchors such as model names/platforms, semiconductor components/materials, compute infrastructure, software engineering terms, policy actors, and robotics terms as the main signal.
    - Treat broad business or risk words such as `市场`, `价格`, `融资`, `估值`, `安全`, and `风险` as secondary unless the title and evidence are mainly about financial statements, funding rounds, valuation, macro rates, asset repricing, policy, security, or compliance.
@@ -103,10 +105,11 @@ python3 scripts/validate_report.py /tmp/report.json
 - Final summary wording must not upgrade unverified source labels into verified original facts.
 - Public report text must not contain over-generalization phrases such as `核心变化`, `趋势`, `行业格局`, `商业化叙事`, `产业链支撑`, or `价值重估`.
 - Public report text must not contain empty templates such as `判断依据在于`, `是否支撑`, `这些信息支持的结论限于`, or `关键证据在于`.
-- Public report text must not contain colloquial or emotional wording such as `狂烧`, `这才`, `啥`, `一项项`, repeated ellipses, or rhetorical questions.
+- Public report text must not contain colloquial or emotional wording such as `狂烧`, `这才`, `啥`, `一项项`, `触目惊心`, `一次性垃圾`, repeated ellipses, or rhetorical questions.
 - Public report Markdown/HTML must not render `生成时间`, `新增文章：`, or the disclaimer `说明：本报告为客观信息整理，不提供行动建议`.
-- Public report Markdown/HTML must use `收录文章：X 篇；来源公众号：Y 个`, table header `主题 | 摘要 | 来源`, and a short explanation of internal source ids such as `S1`.
-- Public report text must not expose low-signal metadata snippets such as `公开发表于`, `原始内容参考`, `内容提要`, or first-person process fragments such as `比如，我`, `我一查`, `我本来顺手`, `试探性激将`, `过程就不展示`, `并且当然`.
+- Public report Markdown/HTML must use `收录文章：X 篇；来源公众号：Y 个`, table header `主题 | 摘要 | 来源`, and the numeric-reference explanation `引用说明：文中方括号数字对应文末“参考文献”。`
+- Public report Markdown/HTML must not expose `S1`, `S2`, `[S1]`, or `[S2]`; internal source ids may remain in JSON for validation, but public rendering must use `[1]`, `[2]`, etc.
+- Public report text must not expose low-signal metadata snippets such as `公开发表于`, `原始内容参考`, `内容提要`, `报告文章摘要概述`, `投资逻辑`, `导语`, `今日好文`, `原文正面表述`, or first-person process fragments such as `比如，我`, `我一查`, `我本来顺手`, `试探性激将`, `过程就不展示`, `并且当然`.
 - Public evidence bullets must not collapse rich article bodies into direction-only statements such as `在访谈中讨论英特尔代工、产品路线和长期回报目标`; include the actual cooperation parties, route parameters, and targets when the body provides them.
 - Markdown and JSON must describe the same title, window, source ids, and core sections.
 - Keep evidence-boundary disclosures in `quality_warnings_json` and optional `source_audit_json`; do not render a public `信息边界` section in the final Markdown report unless the user explicitly asks for a debug/audit view.

@@ -25,7 +25,7 @@ The briefing belongs to the website module, not the Feishu daily report project.
   - source links
   - quality warnings
 - Avoid nested UI cards; this is a work dashboard, so use dense, readable sections.
-- Make source links open original WeChat URLs in a new tab. Public source lists should use `引用来源` and the format `[S1] 文章标题（公众号：账号）`; do not append publish timestamps in the public citation list.
+- Make source links open original WeChat URLs in a new tab. Public source lists should use `参考文献` and numeric labels such as `[1] 公众号名. 文章标题[EB/OL]. 微信公众号. 原文链接`; do not append publish timestamps in the public reference list. Internal `S1` ids may remain in JSON but must not be rendered publicly.
 
 ## Deployment
 

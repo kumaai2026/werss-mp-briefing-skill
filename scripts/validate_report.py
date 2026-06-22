@@ -62,6 +62,10 @@ COLLOQUIAL_PHRASES = (
     "我一查",
     "我本来顺手",
     "为几个数字较真",
+    "触目惊心",
+    "一次性垃圾",
+    "自个儿",
+    "不限量",
 )
 LOW_SIGNAL_SUMMARY_PHRASES = (
     "公开发表于",
@@ -69,6 +73,33 @@ LOW_SIGNAL_SUMMARY_PHRASES = (
     "内容提要",
     "youtube.com",
     "youtu.be",
+    "提供了相关事实材料",
+    "以下为完整版对话",
+    "完整版对话",
+    "招聘",
+    "薪酬福利",
+    "基础月薪",
+    "商务提成",
+    "智慧小招",
+    "高考志愿",
+    "报告文章摘要概述",
+    "文章摘要概述",
+    "投资逻辑",
+    "导语",
+    "DELETED",
+    "本文约",
+    "原文正面表述",
+    "今日好文",
+    "亏损 Token",
+    "赚不到钱",
+    "推荐将本号",
+    "加为星标",
+    "转发收藏",
+    "建议转发",
+    "疼痛线",
+    "回到开头",
+    "全砸",
+    "回到 AI",
 )
 DIRECTION_ONLY_SUMMARY_PHRASES = (
     "在访谈中讨论英特尔代工、产品路线和长期回报目标",
@@ -80,7 +111,8 @@ DIRECTION_ONLY_SUMMARY_PHRASES = (
     "文章复盘",
 )
 NUMBER_RE = re.compile(r"\d+(?:\.\d+)?\s*(?:%|pct|bp|bps|万|亿|元|美元|人民币|GB|TB|PB|MW|GW|kW|W|卡时|颗|篇|个|家|倍)?")
-SOURCE_LINE_RE = re.compile(r"^- \[S\d+\] .+（公众号：.+）$")
+REFERENCE_LINE_RE = re.compile(r"^\[\d+\] .+\[EB/OL\]\. 微信公众号\. https?://")
+PUBLIC_INTERNAL_SOURCE_RE = re.compile(r"(?:\[S\d+\]|(?<![A-Za-z])S\d+(?![A-Za-z0-9]))")
 AUDIT_STATUSES = {"supported", "partial", "unverified", "conflict"}
 CONCLUSION_STRENGTHS = {"single_source_fact", "multi_source_same_topic", "cross_source_pattern"}
 
@@ -156,30 +188,46 @@ def main() -> int:
             findings.append("markdown missing summary table heading")
         if (payload.get("article_count") or 0) > 0 and ("收录文章：" not in markdown or "来源公众号：" not in markdown):
             findings.append("markdown missing collection/source account metadata")
-        if (payload.get("article_count") or 0) > 0 and "引用编号：" not in markdown:
-            findings.append("markdown missing source id explanation")
+        if "引用编号：" in markdown:
+            findings.append("markdown uses old source id explanation")
+        if (payload.get("article_count") or 0) > 0 and "引用说明：文中方括号数字对应文末“参考文献”。" not in markdown:
+            findings.append("markdown missing numeric citation explanation")
+        if PUBLIC_INTERNAL_SOURCE_RE.search(markdown):
+            findings.append("markdown exposes internal S source ids")
         if "## 事实摘录与有限归纳" in markdown:
             findings.append("markdown uses old detail heading")
         if "## 来源清单" in markdown:
             findings.append("markdown uses old source heading")
+        if "## 引用来源" in markdown:
+            findings.append("markdown uses old citation section heading")
         if (payload.get("article_count") or 0) > 0 and "## 摘要速读" not in markdown:
             findings.append("markdown missing 摘要速读 heading")
-        if (payload.get("article_count") or 0) > 0 and "## 引用来源" not in markdown:
-            findings.append("markdown missing 引用来源 heading")
+        if (payload.get("article_count") or 0) > 0 and "## 参考文献" not in markdown:
+            findings.append("markdown missing 参考文献 heading")
         for phrase in ("下方逐篇列出代表文章主旨", "不替代交易结论", "不外推到板块或行业层面"):
             if phrase in markdown:
                 findings.append(f"markdown contains generic body disclaimer: {phrase}")
-        source_section = markdown.split("## 引用来源", 1)[1] if "## 引用来源" in markdown else ""
-        source_lines = [line for line in source_section.splitlines() if line.startswith("- [S")]
+        source_section = markdown.split("## 参考文献", 1)[1] if "## 参考文献" in markdown else ""
+        source_lines = [line for line in source_section.splitlines() if re.match(r"^\[\d+\] ", line)]
         for source in sources:
             source_id = str(source.get("id") or "")
-            if source_id and not any(line.startswith(f"- [{source_id}] ") for line in source_lines):
-                findings.append(f"markdown missing citation line: {source_id}")
+            citation_label = str(source.get("citation_label") or "")
+            if not citation_label and source_id:
+                match = re.search(r"\d+", source_id)
+                citation_label = f"[{int(match.group(0))}]" if match else ""
+            if citation_label and not any(line.startswith(f"{citation_label} ") for line in source_lines):
+                findings.append(f"markdown missing reference line: {citation_label}")
         for line in source_lines:
-            if not SOURCE_LINE_RE.match(line):
-                findings.append(f"markdown citation format invalid: {line[:80]}")
+            if not REFERENCE_LINE_RE.match(line):
+                findings.append(f"markdown reference format invalid: {line[:80]}")
             if re.search(r"(?:19|20)\d{2}-\d{2}-\d{2}T\d{2}:\d{2}", line):
-                findings.append(f"markdown citation contains timestamp: {line[:80]}")
+                findings.append(f"markdown reference contains timestamp: {line[:80]}")
+        reference_numbers = {int(match.group(1)) for line in source_lines for match in [re.match(r"^\[(\d+)\] ", line)] if match}
+        body_before_refs = markdown.split("## 参考文献", 1)[0]
+        cited_numbers = {int(item) for item in re.findall(r"\[(\d+)\]", body_before_refs)}
+        missing_refs = sorted(cited_numbers - reference_numbers)
+        if missing_refs:
+            findings.append(f"markdown citations missing references: {missing_refs}")
     for row in payload.get("summary_table_json") or []:
         refs = [str(item) for item in row.get("sources") or []]
         if not refs:
