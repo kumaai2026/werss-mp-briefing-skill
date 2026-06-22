@@ -43,7 +43,7 @@ Generate a site-facing briefing from WeRSS articles fetched in the fixed report 
    - Mark whether the WeRSS body is available and long enough to support the article.
    - Open or preserve the original URL where possible.
    - Verify primary links embedded in the article for high-impact numbers, dates, named entities, and technical claims.
-   - Mark unavailable originals, secondary-only evidence, duplicate sources, and conflicts for `信息边界`.
+   - Mark unavailable originals, secondary-only evidence, duplicate sources, and conflicts in internal quality warnings or `source_audit_json`.
 7. Compare final draft claims against source evidence before publishing. Each `core_viewpoint`, `details.summary`, and evidence bullet must be supported by the referenced source body or clearly labeled as a synthesis within the evidence boundary.
 8. Generate:
    - `summary_table_json`: rows with `theme`, `core_viewpoint`, and `sources`.
@@ -92,6 +92,6 @@ python3 scripts/validate_report.py /tmp/report.json
 - Public report text must not contain empty templates such as `判断依据在于`, `是否支撑`, `这些信息支持的结论限于`, or `关键证据在于`.
 - Public report text must not contain colloquial or emotional wording such as `狂烧`, `这才`, `啥`, `一项项`, repeated ellipses, or rhetorical questions.
 - Markdown and JSON must describe the same title, window, source ids, and core sections.
-- `信息边界` must disclose missing article bodies, secondary-only sources, duplicate/derivative sources, and important excluded claims.
-- `信息边界` must include counts for single-source themes, themes without cross-source conclusions, and themes downgraded to fact excerpts.
+- Keep evidence-boundary disclosures in `quality_warnings_json` and optional `source_audit_json`; do not render a public `信息边界` section in the final Markdown report unless the user explicitly asks for a debug/audit view.
+- `quality_warnings_json` must include counts for single-source themes, themes without cross-source conclusions, and themes downgraded to fact excerpts.
 - Empty windows should produce an explicit no-new-article report, not fabricated themes.

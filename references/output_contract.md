@@ -47,7 +47,7 @@ Optional debug/archive array. Use when claims require final-summary-to-source co
 - `supporting_text`: short source excerpt, primary-source note, or explanation of why the original is missing.
 - `notes`: concise boundary note, such as `secondary-only source`, `primary link verified`, `duplicate source`, or `number excluded`.
 
-Do not render this field as a public website section by default. Use it to decide what belongs in `信息边界`.
+Do not render this field as a public website section by default. Use it together with `quality_warnings_json` for internal QA and optional audit views.
 
 ## report_markdown
 
@@ -57,8 +57,9 @@ Required section order:
 2. Metadata lines: report window, generated time, article count, account count.
 3. `## 要点速览`: Markdown table with `主题 | 要点摘要 | 来源`.
 4. `## 事实摘录与有限归纳`: one subsection per detail, each with cited evidence bullets.
-5. `## 信息边界`: generation limits, source-level warnings, secondary-only evidence, duplicate-source notes, and empty/body-missing warnings.
-6. `## 来源清单`: source ids with original links.
+5. `## 来源清单`: source ids with original links.
+
+Do not render `## 信息边界` in the final Markdown report. Keep generation limits, source-level warnings, secondary-only evidence, duplicate-source notes, and empty/body-missing warnings in `quality_warnings_json` and optional `source_audit_json` for internal review.
 
 ## Prohibited Output
 

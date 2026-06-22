@@ -90,7 +90,7 @@ For every source article, classify:
 - `primary_link_verified`: article links to a paper, filing, company release, transcript, or data page and the link opens.
 - `unverified`: only title/account/date or a short description is available.
 
-The final report can still mention unverified sources, but core viewpoints should not rely on them without an `信息边界` warning.
+The final report can still mention unverified sources, but core viewpoints should not rely on them without an internal `quality_warnings_json` or `source_audit_json` warning.
 
 ### 2. Compare final summaries against claim-level evidence
 
@@ -122,13 +122,15 @@ Ban generated table headers or prose such as:
 
 If the source itself uses these terms, keep them only in source excerpts or source titles, not in generated analysis.
 
-### 5. Add unresolved-source disclosure to `信息边界`
+### 5. Add unresolved-source disclosure to internal quality fields
 
-Every report should state:
+Every report should record internally:
 
 - Number of sources with missing original body.
 - Number of sources where only a secondary digest was available.
 - Important claims or numbers excluded because the original was not verified.
+
+Do not render these notes as a public `信息边界` section in the final Markdown report unless the user explicitly asks for a debug/audit view.
 
 ### 6. Keep implementation minimal
 

@@ -54,6 +54,7 @@ COLLOQUIAL_PHRASES = (
     "啥",
     "一项项",
     "……",
+    "…",
 )
 NUMBER_RE = re.compile(r"\d+(?:\.\d+)?\s*(?:%|pct|bp|bps|万|亿|元|美元|人民币|GB|TB|PB|MW|GW|kW|W|卡时|颗|篇|个|家|倍)?")
 AUDIT_STATUSES = {"supported", "partial", "unverified", "conflict"}

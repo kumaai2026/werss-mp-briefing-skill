@@ -2,14 +2,14 @@
 :root { color-scheme: light; --bg:#f6f7f9; --panel:#fff; --text:#1f2933; --muted:#667085; --line:#d7dde5; --accent:#175cd3; --bad:#fff1b8; --bad-line:#d89614; --ok:#067647; --warn:#b42318; }
 * { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--text); font:14px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
 header { padding:24px 28px 16px; border-bottom:1px solid var(--line); background:#fff; position:sticky; top:0; z-index:5; } h1 { margin:0 0 8px; font-size:22px; } .meta { color:var(--muted); display:flex; gap:14px; flex-wrap:wrap; }
-.summary { padding:16px 28px; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; } .card { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:12px 14px; min-height:92px; } .card h2 { margin:0 0 8px; font-size:14px; }
+.summary { padding:16px 28px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; } .card { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:12px 14px; min-height:92px; } .card h2 { margin:0 0 8px; font-size:14px; }
 .badge { display:inline-block; margin:0 6px 6px 0; padding:2px 8px; border-radius:999px; font-size:12px; border:1px solid var(--line); background:#f8fafc; } .badge.ok { color:var(--ok); border-color:#abefc6; background:#ecfdf3; } .badge.warn { color:var(--warn); border-color:#fecdca; background:#fffbfa; }
 .compare { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:16px; padding:0 28px 28px; align-items:start; } .col { background:var(--panel); border:1px solid var(--line); border-radius:8px; overflow:hidden; } .col-title { position:sticky; top:88px; z-index:4; padding:12px 16px; border-bottom:1px solid var(--line); background:#f9fafb; display:flex; justify-content:space-between; gap:12px; align-items:center; } .col-title strong { font-size:16px; }
 .report { padding:16px; max-height:calc(100vh - 152px); overflow:auto; } .report h1 { font-size:20px; border-bottom:1px solid var(--line); padding-bottom:8px; } .report h2 { margin-top:22px; font-size:17px; } .report h3 { margin-top:18px; font-size:15px; } .report p { margin:8px 0; } .report ul { padding-left:20px; } .report li { margin:6px 0; }
-table { width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:13px; } th,td { border:1px solid var(--line); padding:8px; vertical-align:top; } th { background:#f2f4f7; text-align:left; } a { color:var(--accent); text-decoration:none; } a:hover { text-decoration:underline; } mark { background:var(--bad); border-bottom:1px solid var(--bad-line); padding:0 2px; } .source-ref { color:#475467; font-weight:600; } .quality ul { margin:0; padding-left:18px; }
+table { width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:13px; } th,td { border:1px solid var(--line); padding:8px; vertical-align:top; } th { background:#f2f4f7; text-align:left; } a { color:var(--accent); text-decoration:none; } a:hover { text-decoration:underline; } mark { background:var(--bad); border-bottom:1px solid var(--bad-line); padding:0 2px; } .source-ref { color:#475467; font-weight:600; }
 @media (max-width:1100px) { header { position:static; } .summary { grid-template-columns:1fr; } .compare { grid-template-columns:1fr; } .col-title { position:static; } .report { max-height:none; } }
 </style></head><body><header><h1>2026-06-18 晚报新旧版本并列对比</h1><div class="meta"><span>窗口：2026-06-18 08:30 - 20:30</span><span>文章：76 篇</span><span>公众号：32 个</span><span>新版校验：warning</span></div></header>
-<section class="summary"><div class="card"><h2>旧版生成正文问题词</h2><span class="badge warn">核心观点 × 3</span><span class="badge warn">核心变化 × 5</span><span class="badge warn">判断依据在于 × 5</span><span class="badge warn">是否支撑 × 6</span><span class="badge warn">这些信息支持的结论限于 × 5</span><span class="badge warn">关键证据在于 × 1</span><span class="badge warn">商业化叙事 × 2</span><span class="badge warn">目标价 × 3</span><span class="badge warn">趋势 × 3</span><span class="badge warn">… × 2</span></div><div class="card"><h2>新版生成正文问题词</h2><span class="badge ok">未命中</span></div><div class="card quality"><h2>新版信息边界</h2><ul><li>未形成跨来源结论的主题 1 个，未写作板块层面的方向判断。</li><li>小样本结论已降级：1 个主题按来源摘录或有限归纳处理。</li><li>口语证据已清洗为正式转述。</li></ul></div><div class="card"><h2>新版主题</h2><span class="badge ok">半导体设备、封装与材料</span><span class="badge ok">金融市场与公司经营</span><span class="badge ok">AI 模型、Agent 与应用产品</span><span class="badge ok">AI 算力与基础设施</span><span class="badge ok">产品工程与数据基础设施</span><span class="badge ok">政策、安全与国际议题</span></div></section>
+<section class="summary"><div class="card"><h2>旧版生成正文问题词</h2><span class="badge warn">核心观点 × 3</span><span class="badge warn">核心变化 × 5</span><span class="badge warn">判断依据在于 × 5</span><span class="badge warn">是否支撑 × 6</span><span class="badge warn">这些信息支持的结论限于 × 5</span><span class="badge warn">关键证据在于 × 1</span><span class="badge warn">商业化叙事 × 2</span><span class="badge warn">目标价 × 3</span><span class="badge warn">趋势 × 3</span><span class="badge warn">… × 2</span></div><div class="card"><h2>新版生成正文问题词</h2><span class="badge ok">未命中</span></div><div class="card"><h2>新版主题</h2><span class="badge ok">半导体设备、封装与材料</span><span class="badge ok">金融市场与公司经营</span><span class="badge ok">AI 模型、Agent 与应用产品</span><span class="badge ok">AI 算力与基础设施</span><span class="badge ok">产品工程与数据基础设施</span><span class="badge ok">政策、安全与国际议题</span></div></section>
 <main class="compare"><section class="col"><div class="col-title"><strong>旧版归档</strong><span>old_2026-06-18_evening.md</span></div><div class="report"><h1>2026-06-18 晚报</h1>
 <ul>
 <li>报告窗口：2026-06-18T08:30:00 - 2026-06-18T20:30:00</li>
@@ -77,10 +77,6 @@ table { width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:13px
 <li>他持续数月试图“阻止窃选”，并最终在 1 月 6 日对国会大厦的袭击中达到高潮，这是一场欺骗行为。我们之所以知道这是一场欺骗行为，是因为特朗普的助手和盟友都是这么说的。他们公开说过，也在宣誓作证时说过。 <span class="source-ref">[S67]</span></li>
 <li>洛杉矶市议会民主党成员尼西亚·拉曼（Nithya Raman）开始追赶。拉曼是挑战巴斯的左翼候选人。最终，拉曼在争夺 11 月选票第二个席位的竞赛中超过普拉特，终结了他的竞选。 <span class="source-ref">[S67]</span></li>
 <li>特朗普总统常常会这样做。在最近接受 NBC《会见新闻界》（Meet the Press）主持人克里斯滕·韦尔克（Kristen Welker）采访时，他对所谓舞弊大发雷霆，扫除了所有疑问。谈到 2020 年大选时，他说：“选举被操纵了。那是一场肮脏的选举。现在加州又在发生同样的事。”特朗普接着说，美国选举“就像第三世界国家”。 <span class="source-ref">[S67]</span></li>
-</ul>
-<h2>信息边界</h2>
-<ul>
-<li>已完成来源链接、引用覆盖和数字来源的基础校验。</li>
 </ul>
 <h2>来源清单</h2>
 <ul>
@@ -163,7 +159,7 @@ table { width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:13px
 </ul></div></section><section class="col"><div class="col-title"><strong>新版重整</strong><span>new_2026-06-18_evening.md</span></div><div class="report"><h1>2026-06-18 晚报</h1>
 <ul>
 <li>报告窗口：2026-06-18T08:30:00 - 2026-06-18T20:30:00</li>
-<li>生成时间：2026-06-22T14:12:17</li>
+<li>生成时间：2026-06-22T14:24:40</li>
 <li>新增文章：76 篇，公众号：32 个</li>
 <li>说明：本报告为客观信息整理，不提供行动建议。</li>
 </ul>
@@ -230,12 +226,6 @@ table { width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:13px
 <li>特朗普投票舞弊论述：文章称，特朗普持续谈论投票舞弊的政治动机是原文评论重点。 <span class="source-ref">[S67]</span></li>
 <li>特朗普与内塔尼亚胡关系：文章称，特朗普与内塔尼亚胡在以色列军事行动问题上的互动是原文梳理重点。 <span class="source-ref">[S68]</span></li>
 <li>美国对伊协议文本：文章称，美国与伊朗协议文本提到双方承诺在最多60天内谈判达成最终协议。 <span class="source-ref">[S69]</span></li>
-</ul>
-<h2>信息边界</h2>
-<ul>
-<li>未形成跨来源结论的主题 1 个，未写作板块层面的方向判断。</li>
-<li>小样本结论已降级：1 个主题按来源摘录或有限归纳处理。</li>
-<li>口语证据已清洗为正式转述。</li>
 </ul>
 <h2>来源清单</h2>
 <ul>
