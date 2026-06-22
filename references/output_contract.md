@@ -7,7 +7,7 @@ Use these JSON fields for D91 website rendering.
 Array of objects:
 
 - `theme`: short factual topic name, preferably from article title/body terms.
-- `core_viewpoint`: evidence-grounded analytical synthesis of the common point across the referenced theme articles. Start directly with the conclusion, logic, constraint, or evidence boundary. It must not be a pasted article digest, a simple concatenation of source sentences, or an introductory wrapper such as `XX主题下，文章集中讨论...`. Keep numbers only when present in referenced sources.
+- `core_viewpoint`: evidence-grounded key-point summary. It must state a concrete fact, difference, or source boundary, not a broad trend. For single-source rows, use `单篇文章显示`, `原文称`, or `该报告披露`; for weak multi-source rows, use `多篇文章共同涉及`; use `本时段样本显示` only when the row has at least three sources from at least two accounts. Keep numbers only when present in referenced sources.
 - `sources`: array of source ids such as `["S1", "S3"]`.
 
 ## details_json
@@ -15,9 +15,12 @@ Array of objects:
 Array of objects:
 
 - `theme`: same topic name used in the table when possible.
-- `summary`: objective synthesis from referenced article bodies, explaining the shared logic, differences, and evidence boundary. It must not be a stitched paragraph of raw source excerpts or a generic setup paragraph.
+- `summary`: objective finite-sample summary from referenced article bodies. It must contain a concrete object, action, number, or boundary. If evidence points already contain the useful facts, keep this to one short boundary sentence rather than adding a generic setup paragraph.
 - `evidence_points`: array of `{ "text": "...", "sources": ["S1"] }`.
 - `sources`: unique source ids used by this detail section.
+- `source_count`: count of unique source ids.
+- `account_count`: count of unique source accounts.
+- `conclusion_strength`: `single_source_fact`, `multi_source_same_topic`, or `cross_source_pattern`.
 
 ## sources_json
 
@@ -52,8 +55,8 @@ Required section order:
 
 1. `# YYYY-MM-DD 早报/晚报`
 2. Metadata lines: report window, generated time, article count, account count.
-3. `## 要点速览`: Markdown table with `主题 | 核心观点 | 来源`.
-4. `## 核心观点详细论证`: one subsection per detail, each with cited evidence bullets.
+3. `## 要点速览`: Markdown table with `主题 | 要点摘要 | 来源`.
+4. `## 事实摘录与有限归纳`: one subsection per detail, each with cited evidence bullets.
 5. `## 信息边界`: generation limits, source-level warnings, secondary-only evidence, duplicate-source notes, and empty/body-missing warnings.
 6. `## 来源清单`: source ids with original links.
 
@@ -74,6 +77,32 @@ Do not generate action-oriented investment language:
 - `受益标的`
 - `价值重估`
 - `目标价`
+
+Do not generate over-generalized sample claims:
+
+- `核心变化`
+- `趋势`
+- `行业格局`
+- `格局变化`
+- `商业化叙事`
+- `产业链支撑`
+
+Do not generate empty analytical templates:
+
+- `判断依据在于`
+- `是否支撑`
+- `这些信息支持的结论限于`
+- `关键证据在于`
+- `数字、日期和具体事实以证据句`
+
+Do not generate colloquial, emotional, or headline-like wording:
+
+- `狂烧`
+- `这才`
+- `啥`
+- `一项项`
+- `……`
+- `？`
 
 Source titles may contain finance terms, but generated prose must stay descriptive.
 

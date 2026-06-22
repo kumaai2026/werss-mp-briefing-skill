@@ -15,14 +15,17 @@
   "details_json": [
     {
       "theme": "AI 应用",
-      "summary": "样例来源只支持判断一个工作流落地案例，不能外推到整个行业趋势。",
+      "summary": "单篇文章仅支持判断一个工作流落地案例，不能外推到整个行业。",
       "evidence_points": [
         {
           "text": "文章称该工具接入了具体工作流，并在 1 个场景中进行验证。",
           "sources": ["S1"]
         }
       ],
-      "sources": ["S1"]
+      "sources": ["S1"],
+      "source_count": 1,
+      "account_count": 1,
+      "conclusion_strength": "single_source_fact"
     }
   ],
   "sources_json": [

@@ -32,8 +32,32 @@ LOW_INFORMATION_WRAPPERS = (
     "从来源分布看",
     "可比的信息不是标题热度",
 )
+OVERGENERALIZATION_PHRASES = (
+    "核心变化",
+    "趋势",
+    "行业格局",
+    "格局变化",
+    "商业化叙事",
+    "产业链支撑",
+    "价值重估",
+)
+EMPTY_SUMMARY_TEMPLATES = (
+    "判断依据在于",
+    "是否支撑",
+    "这些信息支持的结论限于",
+    "关键证据在于",
+    "数字、日期和具体事实以证据句",
+)
+COLLOQUIAL_PHRASES = (
+    "狂烧",
+    "这才",
+    "啥",
+    "一项项",
+    "……",
+)
 NUMBER_RE = re.compile(r"\d+(?:\.\d+)?\s*(?:%|pct|bp|bps|万|亿|元|美元|人民币|GB|TB|PB|MW|GW|kW|W|卡时|颗|篇|个|家|倍)?")
 AUDIT_STATUSES = {"supported", "partial", "unverified", "conflict"}
+CONCLUSION_STRENGTHS = {"single_source_fact", "multi_source_same_topic", "cross_source_pattern"}
 
 
 def parse_args() -> argparse.Namespace:
@@ -76,6 +100,17 @@ def main() -> int:
     for phrase in LOW_INFORMATION_WRAPPERS:
         if phrase in generated_text:
             findings.append(f"low-information wrapper: {phrase}")
+    for phrase in OVERGENERALIZATION_PHRASES:
+        if phrase in generated_text:
+            findings.append(f"over-generalization phrase: {phrase}")
+    for phrase in EMPTY_SUMMARY_TEMPLATES:
+        if phrase in generated_text:
+            findings.append(f"empty summary template: {phrase}")
+    for phrase in COLLOQUIAL_PHRASES:
+        if phrase in generated_text:
+            findings.append(f"colloquial phrase: {phrase}")
+    if re.search(r"[?？]", generated_text):
+        findings.append("rhetorical question punctuation")
     for row in payload.get("summary_table_json") or []:
         refs = [str(item) for item in row.get("sources") or []]
         if not refs:
@@ -90,6 +125,13 @@ def main() -> int:
         if not refs:
             findings.append(f"detail missing sources: {detail.get('theme', '')}")
         append_unknown_refs(findings, refs, source_map, f"detail {detail.get('theme', '')}")
+        strength = str(detail.get("conclusion_strength") or "")
+        if strength and strength not in CONCLUSION_STRENGTHS:
+            findings.append(f"detail invalid conclusion_strength: {strength}")
+        if strength == "single_source_fact" and len(set(refs)) != 1:
+            findings.append(f"single_source_fact source count mismatch: {detail.get('theme', '')}")
+        if strength == "cross_source_pattern" and len(set(refs)) < 3:
+            findings.append(f"cross_source_pattern source count too small: {detail.get('theme', '')}")
         evidence = " ".join(str(source_map.get(ref, {}).get("evidence_text") or "") for ref in refs)
         missing = text_numbers(str(detail.get("summary") or "")) - text_numbers(evidence)
         if missing:

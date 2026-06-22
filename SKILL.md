@@ -20,6 +20,13 @@ Generate a site-facing briefing from WeRSS articles fetched in the fixed report 
 - Core viewpoints and detail summaries should synthesize the common point of each theme. Do not simply paste the first article digest or concatenate source sentences.
 - Output the synthesis directly. Do not start with introductory wrappers such as `XX主题下`, `文章集中讨论`, `共同线索是`, `共同指向`, or `本时段核心不是单篇消息本身`.
 - Avoid vague, low-information summaries. Each core viewpoint must state the concrete logic, constraint, change, or evidence boundary shown by the referenced articles.
+- Treat the report as finite-sample information organization, not as industry trend research. Do not generalize a single article or a small same-account group into `趋势`, `格局变化`, `核心变化`, or `商业化叙事`.
+- Use conclusion-strength labels when writing summaries:
+  - `single_source_fact`: one source only; write `单篇文章显示`, `原文称`, or `该报告披露`, and do not infer a sector-level conclusion.
+  - `multi_source_same_topic`: two to three sources, or sources from one account only; write that multiple articles involve the same topic, but do not claim a trend.
+  - `cross_source_pattern`: at least three sources from at least two accounts; only then use limited phrasing such as `本时段样本显示`.
+- Prefer concrete facts, differences, and source boundaries over abstract explanations. If evidence bullets already contain the useful facts, do not add a generic introductory summary.
+- Use formal research-record style. Clean public evidence bullets to remove colloquial, emotional, headline-like, or rhetorical wording while preserving entities, numbers, dates, and source ids.
 - Do not provide investment advice or action language such as `投资建议`, `推荐`, `买入`, `关注方向`, or `配置建议`.
 - Produce two synchronized artifacts:
   - Markdown for Obsidian archival.
@@ -40,7 +47,7 @@ Generate a site-facing briefing from WeRSS articles fetched in the fixed report 
 7. Compare final draft claims against source evidence before publishing. Each `core_viewpoint`, `details.summary`, and evidence bullet must be supported by the referenced source body or clearly labeled as a synthesis within the evidence boundary.
 8. Generate:
    - `summary_table_json`: rows with `theme`, `core_viewpoint`, and `sources`.
-   - `details_json`: sections with `theme`, `summary`, `evidence_points`, and `sources`.
+   - `details_json`: sections with `theme`, `summary`, `evidence_points`, `sources`, `source_count`, `account_count`, and `conclusion_strength`.
    - `sources_json`: source id, title, account, publish time, fetched time, original URL.
    - optional `source_audit_json`: claim-level source comparison for debugging and archive QA.
    - `report_markdown`: archive-ready Markdown matching the JSON.
@@ -81,6 +88,10 @@ python3 scripts/validate_report.py /tmp/report.json
 - Every numeric token in generated table/detail text must appear in one of the referenced source evidence texts.
 - Important named entities, dates, transaction amounts, model names, securities codes, and research results must be traceable to source body text or primary links.
 - Final summary wording must not upgrade unverified source labels into verified original facts.
+- Public report text must not contain over-generalization phrases such as `核心变化`, `趋势`, `行业格局`, `商业化叙事`, `产业链支撑`, or `价值重估`.
+- Public report text must not contain empty templates such as `判断依据在于`, `是否支撑`, `这些信息支持的结论限于`, or `关键证据在于`.
+- Public report text must not contain colloquial or emotional wording such as `狂烧`, `这才`, `啥`, `一项项`, repeated ellipses, or rhetorical questions.
 - Markdown and JSON must describe the same title, window, source ids, and core sections.
 - `信息边界` must disclose missing article bodies, secondary-only sources, duplicate/derivative sources, and important excluded claims.
+- `信息边界` must include counts for single-source themes, themes without cross-source conclusions, and themes downgraded to fact excerpts.
 - Empty windows should produce an explicit no-new-article report, not fabricated themes.
