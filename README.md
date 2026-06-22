@@ -14,6 +14,7 @@ This repository contains the `werss-mp-briefing` Codex skill for generating D91 
 
 - `SKILL.md`: Codex skill entrypoint and execution contract.
 - `references/output_contract.md`: JSON and Markdown output schema.
+- `references/source_verification_audit.md`: source-comparison findings and optimization plan for stronger original-source grounding.
 - `references/d91_integration.md`: D91 backend/frontend integration notes.
 - `scripts/collect_werss_window.py`: collect WeRSS articles by `created_at` window.
 - `scripts/validate_report.py`: validate report JSON source coverage, wording, and number grounding.
@@ -42,4 +43,4 @@ After editing this repository, sync it into the local Codex skill directory:
 rsync -a --delete ./ ~/.codex/skills/werss-mp-briefing/
 ```
 
-Review `SKILL.md` and the two files under `references/` before changing report fields, generation prompts, validator rules, or D91 integration behavior.
+Review `SKILL.md` and the files under `references/` before changing report fields, generation prompts, validator rules, or D91 integration behavior.

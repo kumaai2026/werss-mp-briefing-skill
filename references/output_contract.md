@@ -33,6 +33,19 @@ Array of objects:
 - `section_label`
 - `evidence_text`: trimmed text used only for validation/debugging. The website may omit or hide it.
 
+## source_audit_json
+
+Optional debug/archive array. Use when claims require final-summary-to-source comparison.
+
+- `claim`: generated claim being checked.
+- `claim_location`: `summary_table_json`, `details_json.summary`, or `details_json.evidence_points`.
+- `sources`: source ids used to support the claim.
+- `status`: one of `supported`, `partial`, `unverified`, or `conflict`.
+- `supporting_text`: short source excerpt, primary-source note, or explanation of why the original is missing.
+- `notes`: concise boundary note, such as `secondary-only source`, `primary link verified`, `duplicate source`, or `number excluded`.
+
+Do not render this field as a public website section by default. Use it to decide what belongs in `信息边界`.
+
 ## report_markdown
 
 Required section order:
@@ -41,7 +54,7 @@ Required section order:
 2. Metadata lines: report window, generated time, article count, account count.
 3. `## 要点速览`: Markdown table with `主题 | 核心观点 | 来源`.
 4. `## 核心观点详细论证`: one subsection per detail, each with cited evidence bullets.
-5. `## 信息边界`: generation limits and empty/body-missing warnings.
+5. `## 信息边界`: generation limits, source-level warnings, secondary-only evidence, duplicate-source notes, and empty/body-missing warnings.
 6. `## 来源清单`: source ids with original links.
 
 ## Prohibited Output
@@ -49,11 +62,17 @@ Required section order:
 Do not generate action-oriented investment language:
 
 - `投资建议`
+- `投资影响`
+- `投资机会`
 - `推荐`
+- `推荐：`
 - `买入`
 - `卖出`
 - `关注方向`
 - `配置建议`
+- `受益：`
+- `受益标的`
+- `价值重估`
 - `目标价`
 
 Source titles may contain finance terms, but generated prose must stay descriptive.

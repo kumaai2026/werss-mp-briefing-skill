@@ -8,7 +8,21 @@ import json
 import re
 from pathlib import Path
 
-PROHIBITED = ("投资建议", "推荐买入", "买入评级", "卖出评级", "关注方向", "配置建议", "目标价")
+PROHIBITED = (
+    "投资建议",
+    "投资影响",
+    "投资机会",
+    "推荐买入",
+    "推荐：",
+    "买入评级",
+    "卖出评级",
+    "关注方向",
+    "配置建议",
+    "受益：",
+    "受益标的",
+    "价值重估",
+    "目标价",
+)
 LOW_INFORMATION_WRAPPERS = (
     "XX主题下",
     "文章集中讨论",
@@ -19,6 +33,7 @@ LOW_INFORMATION_WRAPPERS = (
     "可比的信息不是标题热度",
 )
 NUMBER_RE = re.compile(r"\d+(?:\.\d+)?\s*(?:%|pct|bp|bps|万|亿|元|美元|人民币|GB|TB|PB|MW|GW|kW|W|卡时|颗|篇|个|家|倍)?")
+AUDIT_STATUSES = {"supported", "partial", "unverified", "conflict"}
 
 
 def parse_args() -> argparse.Namespace:
@@ -29,6 +44,12 @@ def parse_args() -> argparse.Namespace:
 
 def text_numbers(value: str) -> set[str]:
     return {re.sub(r"\s+", "", item.group(0)) for item in NUMBER_RE.finditer(value or "")}
+
+
+def append_unknown_refs(findings: list[str], refs: list[str], source_map: dict[str, dict], label: str) -> None:
+    unknown = [ref for ref in refs if ref not in source_map]
+    if unknown:
+        findings.append(f"{label} unknown sources: {sorted(unknown)}")
 
 
 def main() -> int:
@@ -59,6 +80,7 @@ def main() -> int:
         refs = [str(item) for item in row.get("sources") or []]
         if not refs:
             findings.append(f"summary row missing sources: {row.get('theme', '')}")
+        append_unknown_refs(findings, refs, source_map, f"summary row {row.get('theme', '')}")
         evidence = " ".join(str(source_map.get(ref, {}).get("evidence_text") or "") for ref in refs)
         missing = text_numbers(str(row.get("core_viewpoint") or "")) - text_numbers(evidence)
         if missing:
@@ -67,12 +89,26 @@ def main() -> int:
         refs = [str(item) for item in detail.get("sources") or []]
         if not refs:
             findings.append(f"detail missing sources: {detail.get('theme', '')}")
+        append_unknown_refs(findings, refs, source_map, f"detail {detail.get('theme', '')}")
+        evidence = " ".join(str(source_map.get(ref, {}).get("evidence_text") or "") for ref in refs)
+        missing = text_numbers(str(detail.get("summary") or "")) - text_numbers(evidence)
+        if missing:
+            findings.append(f"detail summary ungrounded numbers {sorted(missing)}: {detail.get('theme', '')}")
         for point in detail.get("evidence_points") or []:
             point_refs = [str(item) for item in point.get("sources") or refs]
+            append_unknown_refs(findings, point_refs, source_map, f"evidence point {detail.get('theme', '')}")
             evidence = " ".join(str(source_map.get(ref, {}).get("evidence_text") or "") for ref in point_refs)
             missing = text_numbers(str(point.get("text") or "")) - text_numbers(evidence)
             if missing:
                 findings.append(f"evidence point ungrounded numbers {sorted(missing)}: {detail.get('theme', '')}")
+    for item in payload.get("source_audit_json") or []:
+        status = str(item.get("status") or "")
+        if status not in AUDIT_STATUSES:
+            findings.append(f"source audit invalid status: {status or '?'}")
+        refs = [str(ref) for ref in item.get("sources") or []]
+        if not refs:
+            findings.append(f"source audit missing sources: {str(item.get('claim') or '')[:40]}")
+        append_unknown_refs(findings, refs, source_map, "source audit")
     result = {"ok": not findings, "findings": findings}
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 1 if findings else 0
