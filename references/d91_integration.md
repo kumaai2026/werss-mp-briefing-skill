@@ -9,6 +9,7 @@ The briefing belongs to the website module, not the Feishu daily report project.
 - Read WeRSS SQLite from configured `WERSS_DB_PATH`.
 - Use `articles.publish_time` for window inclusion. It is the original article time stored as Unix seconds and must be compared against fixed Asia/Shanghai slot cutoffs.
 - Use `created_at` and `updated_at` only as crawler/database record metadata.
+- Classify report themes by the article's primary subject and domain anchors. Broad business or risk words such as prices, market size, funding, valuation, revenue, losses, safety, or risk should not override explicit AI model, semiconductor hardware, compute infrastructure, software engineering, policy, market-record, or robotics anchors.
 - Keep `window_end` fixed to the report slot cutoff (`08:30` or `20:30`); never extend the report because generation ran later.
 - Write Markdown to `MP_REPORT_ARCHIVE_ROOT`.
 - Return structured JSON fields for frontend rendering; do not ask the frontend to parse Markdown.

@@ -6,7 +6,7 @@ Use these JSON fields for D91 website rendering.
 
 Array of objects:
 
-- `theme`: short factual topic name, preferably from article title/body terms.
+- `theme`: short factual topic name based on the article's primary subject. Prefer domain anchors from title/body. Do not classify an AI model/product, semiconductor hardware/material, compute infrastructure, software engineering, market-record, policy, or robotics article into a broad high-level theme only because it mentions prices, market size, funding, valuation, revenue, losses, safety, or risk.
 - `core_viewpoint`: evidence-grounded key-point summary. It must state a concrete fact, difference, or source boundary, not a broad trend. For single-source rows, use `单篇文章显示`, `原文称`, or `该报告披露`; for weak multi-source rows, use `多篇文章共同涉及`; use `本时段样本显示` only when the row has at least three sources from at least two accounts. Keep numbers only when present in referenced sources.
 - `sources`: array of source ids such as `["S1", "S3"]`.
 
@@ -14,7 +14,7 @@ Array of objects:
 
 Array of objects:
 
-- `theme`: same topic name used in the table when possible.
+- `theme`: same topic name used in the table when possible, with the same primary-subject classification rule.
 - `summary`: objective finite-sample summary from referenced article bodies. It must contain a concrete object, action, number, or boundary. If evidence points already contain the useful facts, keep this to one short boundary sentence rather than adding a generic setup paragraph.
 - `evidence_points`: array of `{ "text": "...", "sources": ["S1"] }`.
 - `sources`: unique source ids used by this detail section.
@@ -106,6 +106,12 @@ Do not generate colloquial, emotional, or headline-like wording:
 - `？`
 
 Source titles may contain finance terms, but generated prose must stay descriptive.
+
+## Theme Classification
+
+- Use the article's main object and action as the classification basis: model/platform capability, hardware component/material, compute infrastructure, software engineering/data infrastructure, policy/security event, robotics, or finance/company event.
+- Broad business or risk words such as `市场`, `价格`, `融资`, `估值`, `营收`, `亏损`, `安全`, and `风险` are secondary evidence. They are not enough to override strong domain anchors such as `OpenRouter`, `Fable`, `Fusion`, `Claude`, `GLM`, `光纤`, `MLCC`, `HBM`, `GPU`, `TPU`, `Kafka`, or `Agent`.
+- Use `金融市场与公司经营` when the article's main subject is macro rates/data, financial statements, funding rounds, valuation, IPO, asset pricing, or company operating results. Do not use it as a catch-all bucket for every article containing a number, price, cost, or financing detail.
 
 Do not generate low-information briefing templates:
 

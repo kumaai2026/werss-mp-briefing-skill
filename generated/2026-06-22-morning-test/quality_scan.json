@@ -5,14 +5,13 @@
   "article_count": 43,
   "account_count": 24,
   "themes": [
-    "金融市场与公司经营",
     "半导体设备、封装与材料",
+    "金融市场与公司经营",
     "AI 模型、Agent 与应用产品",
     "AI 算力与基础设施",
-    "产品工程与数据基础设施",
-    "政策、安全与国际议题"
+    "产品工程与数据基础设施"
   ],
   "quality_status": "warning",
-  "quality_warning_count": 4,
+  "quality_warning_count": 3,
   "public_problem_counts": {}
 }

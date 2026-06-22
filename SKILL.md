@@ -18,6 +18,7 @@ Generate a site-facing briefing from WeRSS articles fetched in the fixed report 
 - When an article contains primary links such as papers, filings, official releases, transcripts, or code repositories, use those primary links to verify important numbers, dates, names, and technical claims.
 - Keep the copy objective and factual. Do not invent facts, numbers, dates, tickers, sources, or conclusions.
 - Core viewpoints and detail summaries should synthesize the common point of each theme. Do not simply paste the first article digest or concatenate source sentences.
+- Classify themes by the article's primary subject and domain anchors in the title/body. Incidental words such as `价格`, `市场`, `融资`, `估值`, `营收`, `亏损`, `安全`, or `风险` must not move an AI model, semiconductor hardware, software engineering, infrastructure, or market-record article into the wrong high-level theme unless the article's main subject is financial results, valuation, funding, macro policy, asset pricing, policy, security, or compliance.
 - Output the synthesis directly. Do not start with introductory wrappers such as `XX主题下`, `文章集中讨论`, `共同线索是`, `共同指向`, or `本时段核心不是单篇消息本身`.
 - Avoid vague, low-information summaries. Each core viewpoint must state the concrete logic, constraint, change, or evidence boundary shown by the referenced articles.
 - Treat the report as finite-sample information organization, not as industry trend research. Do not generalize a single article or a small same-account group into `趋势`, `格局变化`, `核心变化`, or `商业化叙事`.
@@ -39,20 +40,24 @@ Generate a site-facing briefing from WeRSS articles fetched in the fixed report 
 3. Collect rows from WeRSS SQLite where `publish_time > window_start_unix_seconds AND publish_time <= window_end_unix_seconds`, interpreting `window_start` and `window_end` in Asia/Shanghai.
 4. For each article, keep `id`, `title`, `account_name`, `url`, `publish_time`, `created_at`, `updated_at`, and enough body content to cite.
 5. Build source ids (`S1`, `S2`, ...). Every table row and detail section must reference one or more source ids.
-6. Run a source verification pass:
+6. Assign themes using primary-subject classification:
+   - Treat strong domain anchors such as model names/platforms, semiconductor components/materials, compute infrastructure, software engineering terms, policy actors, and robotics terms as the main signal.
+   - Treat broad business or risk words such as `市场`, `价格`, `融资`, `估值`, `安全`, and `风险` as secondary unless the title and evidence are mainly about financial statements, funding rounds, valuation, macro rates, asset repricing, policy, security, or compliance.
+   - Audit the largest groups for mixed subjects. If one group contains unrelated AI-model, hardware-material, and macro/company-finance articles only because they share business words, reassign by domain.
+7. Run a source verification pass:
    - Mark whether the WeRSS body is available and long enough to support the article.
    - Open or preserve the original URL where possible.
    - Verify primary links embedded in the article for high-impact numbers, dates, named entities, and technical claims.
    - Mark unavailable originals, secondary-only evidence, duplicate sources, and conflicts in internal quality warnings or `source_audit_json`.
-7. Compare final draft claims against source evidence before publishing. Each `core_viewpoint`, `details.summary`, and evidence bullet must be supported by the referenced source body or clearly labeled as a synthesis within the evidence boundary.
-8. Generate:
+8. Compare final draft claims against source evidence before publishing. Each `core_viewpoint`, `details.summary`, and evidence bullet must be supported by the referenced source body or clearly labeled as a synthesis within the evidence boundary.
+9. Generate:
    - `summary_table_json`: rows with `theme`, `core_viewpoint`, and `sources`.
    - `details_json`: sections with `theme`, `summary`, `evidence_points`, `sources`, `source_count`, `account_count`, and `conclusion_strength`.
    - `sources_json`: source id, title, account, publish time, fetched time, original URL.
    - optional `source_audit_json`: claim-level source comparison for debugging and archive QA.
    - `report_markdown`: archive-ready Markdown matching the JSON.
-9. Validate source links, citation coverage, number grounding, source comparison, and prohibited wording before writing or displaying the report.
-10. Archive Markdown under `公众号早晚报/YYYY-MM/YYYY-MM-DD 早报.md` or `YYYY-MM-DD 晚报.md`.
+10. Validate source links, citation coverage, number grounding, source comparison, theme fit, and prohibited wording before writing or displaying the report.
+11. Archive Markdown under `公众号早晚报/YYYY-MM/YYYY-MM-DD 早报.md` or `YYYY-MM-DD 晚报.md`.
 
 ## Output Requirements
 
@@ -83,6 +88,7 @@ python3 scripts/validate_report.py /tmp/report.json
 ## Quality Gates
 
 - No source URL missing from `sources_json`.
+- No article should be grouped under `金融市场与公司经营` solely because the source text mentions prices, market size, funding, valuation, revenue, or losses when the article's primary subject is an AI model/product, semiconductor hardware/material, compute infrastructure, software engineering, policy event, or robotics topic.
 - No `summary_table_json` row without at least one source id.
 - No `details_json` evidence point without a source id.
 - Every numeric token in generated table/detail text must appear in one of the referenced source evidence texts.
