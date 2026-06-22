@@ -28,6 +28,7 @@ Generate a site-facing briefing from WeRSS articles fetched in the fixed report 
   - `multi_source_same_topic`: two to three sources, or sources from one account only; write that multiple articles involve the same topic, but do not claim a trend.
   - `cross_source_pattern`: at least three sources from at least two accounts; only then use limited phrasing such as `本时段样本显示`.
 - Prefer concrete facts, differences, and source boundaries over abstract explanations. If evidence bullets already contain the useful facts, do not add a generic introductory summary.
+- `摘要速读` is not a one-sentence topic label. Each public evidence bullet should extract the article's valuable contents: named counterparties, product routes, technical parameters, quantified targets, constraints, or stated cause-effect links when present in the body. Avoid bullets that only say the article `讨论/介绍/复盘` a topic without the actual facts.
 - In the public Markdown/HTML report, name the detail section `摘要速读`, not `事实摘录与有限归纳`. Do not render generic theme-opening paragraphs or disclaimer-like sentences such as `下方逐篇列出代表文章主旨`, `不替代交易结论`, or `不外推到板块或行业层面`.
 - Name the summary table column `摘要`, not `要点摘要`.
 - Name the source section `引用来源`. Render each public source as `- [S1] [文章标题](原文链接)（公众号：账号）`; do not append publish timestamps in that source list. Add a short metadata note explaining that `S1`, `S2` are internal source ids mapped to `引用来源`.
@@ -106,6 +107,7 @@ python3 scripts/validate_report.py /tmp/report.json
 - Public report Markdown/HTML must not render `生成时间`, `新增文章：`, or the disclaimer `说明：本报告为客观信息整理，不提供行动建议`.
 - Public report Markdown/HTML must use `收录文章：X 篇；来源公众号：Y 个`, table header `主题 | 摘要 | 来源`, and a short explanation of internal source ids such as `S1`.
 - Public report text must not expose low-signal metadata snippets such as `公开发表于`, `原始内容参考`, `内容提要`, or first-person process fragments such as `比如，我`, `我一查`, `我本来顺手`, `试探性激将`, `过程就不展示`, `并且当然`.
+- Public evidence bullets must not collapse rich article bodies into direction-only statements such as `在访谈中讨论英特尔代工、产品路线和长期回报目标`; include the actual cooperation parties, route parameters, and targets when the body provides them.
 - Markdown and JSON must describe the same title, window, source ids, and core sections.
 - Keep evidence-boundary disclosures in `quality_warnings_json` and optional `source_audit_json`; do not render a public `信息边界` section in the final Markdown report unless the user explicitly asks for a debug/audit view.
 - `quality_warnings_json` must include counts for single-source themes, themes without cross-source conclusions, and themes downgraded to fact excerpts.

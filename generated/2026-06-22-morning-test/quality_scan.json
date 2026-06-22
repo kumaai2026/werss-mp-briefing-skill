@@ -1,17 +1,9 @@
 {
-  "window_start": "2026-06-21T20:30:00",
-  "window_end": "2026-06-22T08:30:00",
-  "time_basis": "publish_time",
-  "article_count": 43,
-  "account_count": 24,
-  "themes": [
-    "半导体设备、封装与材料",
-    "金融市场与公司经营",
-    "AI 模型、Agent 与应用产品",
-    "AI 算力与基础设施",
-    "产品工程与数据基础设施"
-  ],
+  "title": "2026-06-22 早报",
   "quality_status": "warning",
-  "quality_warning_count": 3,
-  "public_problem_counts": {}
+  "warnings": [
+    "未形成跨来源结论的主题 1 个，未写作板块层面的方向判断。",
+    "小样本结论已降级：1 个主题按来源摘录或有限归纳处理。",
+    "口语证据已清洗为正式转述。"
+  ]
 }

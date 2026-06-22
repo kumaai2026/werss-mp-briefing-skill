@@ -70,6 +70,15 @@ LOW_SIGNAL_SUMMARY_PHRASES = (
     "youtube.com",
     "youtu.be",
 )
+DIRECTION_ONLY_SUMMARY_PHRASES = (
+    "在访谈中讨论英特尔代工、产品路线和长期回报目标",
+    "讨论英特尔代工、产品路线和长期回报目标",
+    "文章讨论",
+    "报告讨论",
+    "文章介绍",
+    "文章整理",
+    "文章复盘",
+)
 NUMBER_RE = re.compile(r"\d+(?:\.\d+)?\s*(?:%|pct|bp|bps|万|亿|元|美元|人民币|GB|TB|PB|MW|GW|kW|W|卡时|颗|篇|个|家|倍)?")
 SOURCE_LINE_RE = re.compile(r"^- \[S\d+\] .+（公众号：.+）$")
 AUDIT_STATUSES = {"supported", "partial", "unverified", "conflict"}
@@ -128,6 +137,9 @@ def main() -> int:
     for phrase in LOW_SIGNAL_SUMMARY_PHRASES:
         if phrase in generated_text:
             findings.append(f"low-signal summary phrase: {phrase}")
+    for phrase in DIRECTION_ONLY_SUMMARY_PHRASES:
+        if phrase in generated_text:
+            findings.append(f"direction-only summary phrase: {phrase}")
     if re.search(r"[?？]", generated_text):
         findings.append("rhetorical question punctuation")
     markdown = str(payload.get("report_markdown") or "")

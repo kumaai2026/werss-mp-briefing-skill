@@ -16,7 +16,7 @@ Array of objects:
 
 - `theme`: same topic name used in the table when possible, with the same primary-subject classification rule.
 - `summary`: objective finite-sample summary from referenced article bodies. It must contain a concrete object, action, number, or boundary. If evidence points already contain the useful facts, keep this to one short boundary sentence rather than adding a generic setup paragraph.
-- `evidence_points`: array of `{ "text": "...", "sources": ["S1"] }`. Optional `quote` or `is_quote` may be true only when `text` intentionally preserves a direct original sentence for blockquote rendering.
+- `evidence_points`: array of `{ "text": "...", "sources": ["S1"] }`. Each public point should extract article value, not merely label the topic. When the body provides counterparties, product route, technical parameters, quantified targets, constraints, or stated cause-effect links, include those concrete details. Optional `quote` or `is_quote` may be true only when `text` intentionally preserves a direct original sentence for blockquote rendering.
 - `sources`: unique source ids used by this detail section.
 - `source_count`: count of unique source ids.
 - `account_count`: count of unique source accounts.
@@ -126,6 +126,8 @@ Do not expose low-signal metadata or crawler/source notes as article summaries:
 - `原始内容参考`
 - `内容提要`
 - YouTube or other raw URL boilerplate unless the URL itself is the fact being discussed.
+
+Do not produce direction-only article bullets when the body has richer facts. For example, replace `在访谈中讨论英特尔代工、产品路线和长期回报目标` with the actual cooperation party, capital action, technology route, and target found in the body.
 
 ## Theme Classification
 

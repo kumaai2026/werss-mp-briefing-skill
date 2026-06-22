@@ -1,83 +1,69 @@
-{
-  "date_range": "2026-06-20 to 2026-06-22",
-  "time_basis": "WeRSS articles.publish_time",
-  "reports": [
-    {
-      "title": "2026-06-20 早报",
-      "stem": "2026-06-20_morning",
-      "window_label": "2026年6月19日 20:30 至 2026年6月20日 08:30（北京时间）",
-      "collection_label": "收录文章：14 篇；来源公众号：11 个",
-      "themes": [
-        "半导体设备、封装与材料",
-        "AI 模型、Agent 与应用产品",
-        "AI 算力与基础设施",
-        "金融市场与公司经营"
-      ],
-      "quality_status": "warning",
-      "warning_count": 3
-    },
-    {
-      "title": "2026-06-20 晚报",
-      "stem": "2026-06-20_evening",
-      "window_label": "2026年6月20日 08:30-20:30（北京时间）",
-      "collection_label": "收录文章：47 篇；来源公众号：21 个",
-      "themes": [
-        "AI 模型、Agent 与应用产品",
-        "半导体设备、封装与材料",
-        "AI 算力与基础设施",
-        "金融市场与公司经营",
-        "政策、安全与国际议题"
-      ],
-      "quality_status": "warning",
-      "warning_count": 4
-    },
-    {
-      "title": "2026-06-21 早报",
-      "stem": "2026-06-21_morning",
-      "window_label": "2026年6月20日 20:30 至 2026年6月21日 08:30（北京时间）",
-      "collection_label": "收录文章：14 篇；来源公众号：9 个",
-      "themes": [
-        "半导体设备、封装与材料",
-        "金融市场与公司经营",
-        "AI 模型、Agent 与应用产品"
-      ],
-      "quality_status": "warning",
-      "warning_count": 3
-    },
-    {
-      "title": "2026-06-21 晚报",
-      "stem": "2026-06-21_evening",
-      "window_label": "2026年6月21日 08:30-20:30（北京时间）",
-      "collection_label": "收录文章：91 篇；来源公众号：42 个",
-      "themes": [
-        "半导体设备、封装与材料",
-        "AI 模型、Agent 与应用产品",
-        "金融市场与公司经营",
-        "AI 算力与基础设施",
-        "政策、安全与国际议题",
-        "机器人与具身智能"
-      ],
-      "quality_status": "warning",
-      "warning_count": 1
-    },
-    {
-      "title": "2026-06-22 早报",
-      "stem": "2026-06-22_morning",
-      "window_label": "2026年6月21日 20:30 至 2026年6月22日 08:30（北京时间）",
-      "collection_label": "收录文章：43 篇；来源公众号：24 个",
-      "themes": [
-        "半导体设备、封装与材料",
-        "金融市场与公司经营",
-        "AI 模型、Agent 与应用产品",
-        "AI 算力与基础设施",
-        "产品工程与数据基础设施"
-      ],
-      "quality_status": "warning",
-      "warning_count": 3
-    },
-    {
-      "title": "2026-06-22 晚报",
-      "skipped": "窗口尚未到期"
-    }
-  ]
-}
+[
+  {
+    "title": "2026-06-20 早报",
+    "window_label": "2026年6月19日 20:30 至 2026年6月20日 08:30（北京时间）",
+    "collection_label": "收录文章：14 篇；来源公众号：11 个",
+    "themes": [
+      "半导体设备、封装与材料",
+      "AI 模型、Agent 与应用产品",
+      "AI 算力与基础设施"
+    ],
+    "quality_status": "warning",
+    "warning_count": 3
+  },
+  {
+    "title": "2026-06-20 晚报",
+    "window_label": "2026年6月20日 08:30-20:30（北京时间）",
+    "collection_label": "收录文章：47 篇；来源公众号：21 个",
+    "themes": [
+      "AI 模型、Agent 与应用产品",
+      "半导体设备、封装与材料",
+      "AI 算力与基础设施",
+      "金融市场与公司经营",
+      "政策、安全与国际议题"
+    ],
+    "quality_status": "warning",
+    "warning_count": 3
+  },
+  {
+    "title": "2026-06-21 早报",
+    "window_label": "2026年6月20日 20:30 至 2026年6月21日 08:30（北京时间）",
+    "collection_label": "收录文章：14 篇；来源公众号：9 个",
+    "themes": [
+      "半导体设备、封装与材料",
+      "金融市场与公司经营",
+      "AI 算力与基础设施"
+    ],
+    "quality_status": "warning",
+    "warning_count": 3
+  },
+  {
+    "title": "2026-06-21 晚报",
+    "window_label": "2026年6月21日 08:30-20:30（北京时间）",
+    "collection_label": "收录文章：91 篇；来源公众号：42 个",
+    "themes": [
+      "半导体设备、封装与材料",
+      "AI 模型、Agent 与应用产品",
+      "AI 算力与基础设施",
+      "金融市场与公司经营",
+      "政策、安全与国际议题",
+      "机器人与具身智能"
+    ],
+    "quality_status": "warning",
+    "warning_count": 1
+  },
+  {
+    "title": "2026-06-22 早报",
+    "window_label": "2026年6月21日 20:30 至 2026年6月22日 08:30（北京时间）",
+    "collection_label": "收录文章：43 篇；来源公众号：24 个",
+    "themes": [
+      "金融市场与公司经营",
+      "半导体设备、封装与材料",
+      "AI 模型、Agent 与应用产品",
+      "AI 算力与基础设施",
+      "产品工程与数据基础设施"
+    ],
+    "quality_status": "warning",
+    "warning_count": 3
+  }
+]
