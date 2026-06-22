@@ -57,6 +57,7 @@ COLLOQUIAL_PHRASES = (
     "…",
 )
 NUMBER_RE = re.compile(r"\d+(?:\.\d+)?\s*(?:%|pct|bp|bps|万|亿|元|美元|人民币|GB|TB|PB|MW|GW|kW|W|卡时|颗|篇|个|家|倍)?")
+SOURCE_LINE_RE = re.compile(r"^- \[S\d+\] .+（公众号：.+）$")
 AUDIT_STATUSES = {"supported", "partial", "unverified", "conflict"}
 CONCLUSION_STRENGTHS = {"single_source_fact", "multi_source_same_topic", "cross_source_pattern"}
 
@@ -112,6 +113,30 @@ def main() -> int:
             findings.append(f"colloquial phrase: {phrase}")
     if re.search(r"[?？]", generated_text):
         findings.append("rhetorical question punctuation")
+    markdown = str(payload.get("report_markdown") or "")
+    if markdown:
+        if "## 事实摘录与有限归纳" in markdown:
+            findings.append("markdown uses old detail heading")
+        if "## 来源清单" in markdown:
+            findings.append("markdown uses old source heading")
+        if (payload.get("article_count") or 0) > 0 and "## 摘要速读" not in markdown:
+            findings.append("markdown missing 摘要速读 heading")
+        if (payload.get("article_count") or 0) > 0 and "## 引用来源" not in markdown:
+            findings.append("markdown missing 引用来源 heading")
+        for phrase in ("下方逐篇列出代表文章主旨", "不替代交易结论", "不外推到板块或行业层面"):
+            if phrase in markdown:
+                findings.append(f"markdown contains generic body disclaimer: {phrase}")
+        source_section = markdown.split("## 引用来源", 1)[1] if "## 引用来源" in markdown else ""
+        source_lines = [line for line in source_section.splitlines() if line.startswith("- [S")]
+        for source in sources:
+            source_id = str(source.get("id") or "")
+            if source_id and not any(line.startswith(f"- [{source_id}] ") for line in source_lines):
+                findings.append(f"markdown missing citation line: {source_id}")
+        for line in source_lines:
+            if not SOURCE_LINE_RE.match(line):
+                findings.append(f"markdown citation format invalid: {line[:80]}")
+            if re.search(r"(?:19|20)\d{2}-\d{2}-\d{2}T\d{2}:\d{2}", line):
+                findings.append(f"markdown citation contains timestamp: {line[:80]}")
     for row in payload.get("summary_table_json") or []:
         refs = [str(item) for item in row.get("sources") or []]
         if not refs:

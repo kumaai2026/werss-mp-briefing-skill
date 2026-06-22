@@ -56,8 +56,8 @@ Required section order:
 1. `# YYYY-MM-DD 早报/晚报`
 2. Metadata lines: report window, generated time, article count, account count.
 3. `## 要点速览`: Markdown table with `主题 | 要点摘要 | 来源`.
-4. `## 事实摘录与有限归纳`: one subsection per detail, each with cited evidence bullets.
-5. `## 来源清单`: source ids with original links.
+4. `## 摘要速读`: one subsection per detail, each with cited evidence bullets. Do not insert generic theme-opening paragraphs such as `本组文章的主线是...`, `需要分开看...`, `不替代交易结论`, or `下方逐篇列出代表文章主旨`; if the evidence bullets already carry the information, omit the paragraph.
+5. `## 引用来源`: source ids with original links, formatted as `- [S1] [文章标题](原文链接)（公众号：账号）`. Do not append publish timestamps in this public source list.
 
 Do not render `## 信息边界` in the final Markdown report. Keep generation limits, source-level warnings, secondary-only evidence, duplicate-source notes, and empty/body-missing warnings in `quality_warnings_json` and optional `source_audit_json` for internal review.
 

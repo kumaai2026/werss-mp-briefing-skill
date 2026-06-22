@@ -27,6 +27,8 @@ Generate a site-facing briefing from WeRSS articles fetched in the fixed report 
   - `multi_source_same_topic`: two to three sources, or sources from one account only; write that multiple articles involve the same topic, but do not claim a trend.
   - `cross_source_pattern`: at least three sources from at least two accounts; only then use limited phrasing such as `本时段样本显示`.
 - Prefer concrete facts, differences, and source boundaries over abstract explanations. If evidence bullets already contain the useful facts, do not add a generic introductory summary.
+- In the public Markdown/HTML report, name the detail section `摘要速读`, not `事实摘录与有限归纳`. Do not render generic theme-opening paragraphs or disclaimer-like sentences such as `下方逐篇列出代表文章主旨`, `不替代交易结论`, or `不外推到板块或行业层面`.
+- Name the source section `引用来源`. Render each public source as `- [S1] [文章标题](原文链接)（公众号：账号）`; do not append publish timestamps in that source list.
 - Use formal research-record style. Clean public evidence bullets to remove colloquial, emotional, headline-like, or rhetorical wording while preserving entities, numbers, dates, and source ids.
 - Do not provide investment advice or action language such as `投资建议`, `推荐`, `买入`, `关注方向`, or `配置建议`.
 - Produce two synchronized artifacts:
@@ -52,7 +54,7 @@ Generate a site-facing briefing from WeRSS articles fetched in the fixed report 
 8. Compare final draft claims against source evidence before publishing. Each `core_viewpoint`, `details.summary`, and evidence bullet must be supported by the referenced source body or clearly labeled as a synthesis within the evidence boundary.
 9. Generate:
    - `summary_table_json`: rows with `theme`, `core_viewpoint`, and `sources`.
-   - `details_json`: sections with `theme`, `summary`, `evidence_points`, `sources`, `source_count`, `account_count`, and `conclusion_strength`.
+   - `details_json`: sections with `theme`, optional `summary`, `evidence_points`, `sources`, `source_count`, `account_count`, and `conclusion_strength`. Leave `summary` empty when it would only repeat a generic theme disclaimer.
    - `sources_json`: source id, title, account, publish time, fetched time, original URL.
    - optional `source_audit_json`: claim-level source comparison for debugging and archive QA.
    - `report_markdown`: archive-ready Markdown matching the JSON.

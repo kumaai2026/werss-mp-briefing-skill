@@ -1,0 +1,32 @@
+[
+  {
+    "file": "generated/2026-06-22-morning-test/2026-06-22_morning.json",
+    "ok": true,
+    "findings": []
+  },
+  {
+    "file": "generated/2026-06-20-to-2026-06-22-regression/2026-06-20_morning.json",
+    "ok": true,
+    "findings": []
+  },
+  {
+    "file": "generated/2026-06-20-to-2026-06-22-regression/2026-06-20_evening.json",
+    "ok": true,
+    "findings": []
+  },
+  {
+    "file": "generated/2026-06-20-to-2026-06-22-regression/2026-06-21_morning.json",
+    "ok": true,
+    "findings": []
+  },
+  {
+    "file": "generated/2026-06-20-to-2026-06-22-regression/2026-06-21_evening.json",
+    "ok": true,
+    "findings": []
+  },
+  {
+    "file": "generated/2026-06-20-to-2026-06-22-regression/2026-06-22_morning.json",
+    "ok": true,
+    "findings": []
+  }
+]

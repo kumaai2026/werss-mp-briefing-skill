@@ -1,0 +1,137 @@
+{
+  "generated_at": "2026-06-22T15:04:52",
+  "time_basis": "publish_time",
+  "date_range": [
+    "2026-06-20",
+    "2026-06-22"
+  ],
+  "output_dir": "/Users/kumaai/Documents/公众号报告skill/generated/2026-06-20-to-2026-06-22-regression",
+  "reports": [
+    {
+      "report_date": "2026-06-20",
+      "slot": "morning",
+      "slot_label": "早报",
+      "status": "generated",
+      "stem": "2026-06-20_morning",
+      "json": "2026-06-20_morning.json",
+      "md": "2026-06-20_morning.md",
+      "html": "2026-06-20_morning.html",
+      "window_start": "2026-06-19T20:30:00",
+      "window_end": "2026-06-20T08:30:00",
+      "article_count": 14,
+      "account_count": 11,
+      "themes": [
+        "半导体设备、封装与材料",
+        "AI 模型、Agent 与应用产品",
+        "AI 算力与基础设施",
+        "政策、安全与国际议题"
+      ],
+      "quality_status": "warning",
+      "quality_warning_count": 4,
+      "generator_version": "werss-mp-briefing-v17"
+    },
+    {
+      "report_date": "2026-06-20",
+      "slot": "evening",
+      "slot_label": "晚报",
+      "status": "generated",
+      "stem": "2026-06-20_evening",
+      "json": "2026-06-20_evening.json",
+      "md": "2026-06-20_evening.md",
+      "html": "2026-06-20_evening.html",
+      "window_start": "2026-06-20T08:30:00",
+      "window_end": "2026-06-20T20:30:00",
+      "article_count": 47,
+      "account_count": 21,
+      "themes": [
+        "AI 模型、Agent 与应用产品",
+        "半导体设备、封装与材料",
+        "AI 算力与基础设施",
+        "金融市场与公司经营",
+        "政策、安全与国际议题"
+      ],
+      "quality_status": "warning",
+      "quality_warning_count": 4,
+      "generator_version": "werss-mp-briefing-v17"
+    },
+    {
+      "report_date": "2026-06-21",
+      "slot": "morning",
+      "slot_label": "早报",
+      "status": "generated",
+      "stem": "2026-06-21_morning",
+      "json": "2026-06-21_morning.json",
+      "md": "2026-06-21_morning.md",
+      "html": "2026-06-21_morning.html",
+      "window_start": "2026-06-20T20:30:00",
+      "window_end": "2026-06-21T08:30:00",
+      "article_count": 14,
+      "account_count": 9,
+      "themes": [
+        "半导体设备、封装与材料",
+        "AI 模型、Agent 与应用产品",
+        "金融市场与公司经营",
+        "政策、安全与国际议题"
+      ],
+      "quality_status": "warning",
+      "quality_warning_count": 4,
+      "generator_version": "werss-mp-briefing-v17"
+    },
+    {
+      "report_date": "2026-06-21",
+      "slot": "evening",
+      "slot_label": "晚报",
+      "status": "generated",
+      "stem": "2026-06-21_evening",
+      "json": "2026-06-21_evening.json",
+      "md": "2026-06-21_evening.md",
+      "html": "2026-06-21_evening.html",
+      "window_start": "2026-06-21T08:30:00",
+      "window_end": "2026-06-21T20:30:00",
+      "article_count": 91,
+      "account_count": 42,
+      "themes": [
+        "半导体设备、封装与材料",
+        "AI 模型、Agent 与应用产品",
+        "AI 算力与基础设施",
+        "金融市场与公司经营",
+        "政策、安全与国际议题",
+        "机器人与具身智能"
+      ],
+      "quality_status": "warning",
+      "quality_warning_count": 1,
+      "generator_version": "werss-mp-briefing-v17"
+    },
+    {
+      "report_date": "2026-06-22",
+      "slot": "morning",
+      "slot_label": "早报",
+      "status": "generated",
+      "stem": "2026-06-22_morning",
+      "json": "2026-06-22_morning.json",
+      "md": "2026-06-22_morning.md",
+      "html": "2026-06-22_morning.html",
+      "window_start": "2026-06-21T20:30:00",
+      "window_end": "2026-06-22T08:30:00",
+      "article_count": 43,
+      "account_count": 24,
+      "themes": [
+        "半导体设备、封装与材料",
+        "金融市场与公司经营",
+        "AI 模型、Agent 与应用产品",
+        "AI 算力与基础设施",
+        "产品工程与数据基础设施"
+      ],
+      "quality_status": "warning",
+      "quality_warning_count": 3,
+      "generator_version": "werss-mp-briefing-v17"
+    },
+    {
+      "report_date": "2026-06-22",
+      "slot": "evening",
+      "slot_label": "晚报",
+      "status": "skipped_future",
+      "window_end": "2026-06-22T20:30:00"
+    }
+  ]
+}
