@@ -1,0 +1,24 @@
+{
+  "old_generated_body_phrase_counts": {
+    "核心观点": 3,
+    "核心变化": 5,
+    "判断依据在于": 5,
+    "是否支撑": 6,
+    "这些信息支持的结论限于": 5,
+    "关键证据在于": 1,
+    "商业化叙事": 2,
+    "目标价": 3,
+    "趋势": 3
+  },
+  "new_generated_body_phrase_counts": {},
+  "new_validator_ok": true,
+  "new_quality_status": "warning",
+  "new_quality_warnings": [
+    "单一来源主题 1 个，已按事实摘录处理。",
+    "未形成跨来源结论的主题 1 个，未写作板块层面的方向判断。",
+    "小样本结论已降级：1 个主题按来源摘录或有限归纳处理。",
+    "口语证据已清洗为正式转述。"
+  ],
+  "article_count": 76,
+  "account_count": 32
+}
