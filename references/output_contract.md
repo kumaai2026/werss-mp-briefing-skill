@@ -7,8 +7,8 @@ Use these JSON fields for D91 website rendering.
 Array of objects:
 
 - `theme`: short factual topic name, preferably from article title/body terms.
-- `core_viewpoint`: evidence-grounded analytical synthesis of the common point across the referenced theme articles. Start directly with the conclusion, logic, constraint, or evidence boundary. It must not be a pasted article digest, a simple concatenation of source sentences, or an introductory wrapper such as `XX主题下，文章集中讨论...`. Keep numbers only when present in referenced sources.
-- `sources`: array of source ids such as `["S1", "S3"]`.
+- `core_viewpoint`: concise summary content for the table cell. It may contain 3-8 short points for the theme, separated in Markdown/HTML rendering as line breaks. Merge similar viewpoints, remove repeated wording, preserve newly added information, and use concise declarative sentences.
+- `sources`: array of pure numeric source ids as strings, such as `["1", "3"]`.
 
 ## details_json
 
@@ -16,14 +16,14 @@ Array of objects:
 
 - `theme`: same topic name used in the table when possible.
 - `summary`: objective synthesis from referenced article bodies, explaining the shared logic, differences, and evidence boundary. It must not be a stitched paragraph of raw source excerpts or a generic setup paragraph.
-- `evidence_points`: array of `{ "text": "...", "sources": ["S1"] }`.
+- `evidence_points`: array of `{ "text": "...", "sources": ["1"] }`.
 - `sources`: unique source ids used by this detail section.
 
 ## sources_json
 
 Array of objects:
 
-- `id`: `S1`, `S2`, ...
+- `id`: pure numeric source id as a string, such as `1`, `2`, ...
 - `article_key`
 - `title`
 - `account_name`
@@ -39,38 +39,21 @@ Required section order:
 
 1. `# YYYY-MM-DD 早报/晚报`
 2. Metadata lines: report window, generated time, article count, account count.
-3. `## 要点速览`: Markdown table with `主题 | 核心观点 | 来源`.
-4. `## 核心观点详细论证`: one subsection per detail, each with cited evidence bullets.
-5. `## 信息边界`: generation limits and empty/body-missing warnings.
-6. `## 来源清单`: source ids with original links.
+3. `## 要点速览`: Markdown table with `主题 | 摘要 | 来源`. Keep this table format; summary-content rules apply inside the `摘要` cell.
+4. `## 摘要速读`: one subsection per detail, each with cited evidence bullets.
+5. `## 引用来源`: source ids with original links.
+
+Citation display rules:
+
+- Keep JSON source ids pure numeric strings.
+- In Markdown prose and tables, display source ids with corner brackets, such as `「1」`.
+- In the `来源` column, each displayed citation number must be a Markdown link to the original article URL, such as `[「1」](https://...)`.
+- When multiple sources support one row, render each source number as its own original-article link, separated by `、`.
 
 ## Prohibited Output
 
-Do not generate action-oriented investment language:
-
-- `投资建议`
-- `推荐`
-- `买入`
-- `卖出`
-- `关注方向`
-- `配置建议`
-- `目标价`
-
-Source titles may contain finance terms, but generated prose must stay descriptive.
-
-Do not generate low-information briefing templates:
-
-- `XX主题下`
-- `文章集中讨论`
-- `共同线索是`
-- `共同指向`
-- `本时段核心不是单篇消息本身`
-- `从来源分布看`
-- `可比的信息不是标题热度`
-
-These phrases are too generic for the report module. Replace them with a direct statement of what the referenced articles show, why it matters inside the evidence boundary, and which constraint or factual relationship is supported by the source text.
 
 ## Window Semantics
 
-- `window_start` and `window_end` are fixed slot boundaries based on WeRSS `articles.created_at`.
+- `window_start` and `window_end` are fixed slot boundaries based on WeRSS `articles.published_at`.
 - `generated_at` records when the report was actually produced and may be later than `window_end`.

@@ -9,7 +9,7 @@
     {
       "theme": "AI 应用",
       "core_viewpoint": "示例文章显示，AI 应用从单点能力展示转向具体工作流落地，当前证据仅覆盖样例来源中的一篇文章。",
-      "sources": ["S1"]
+      "sources": ["1"]
     }
   ],
   "details_json": [
@@ -19,15 +19,15 @@
       "evidence_points": [
         {
           "text": "文章称该工具接入了具体工作流，并在 1 个场景中进行验证。",
-          "sources": ["S1"]
+          "sources": ["1"]
         }
       ],
-      "sources": ["S1"]
+      "sources": ["1"]
     }
   ],
   "sources_json": [
     {
-      "id": "S1",
+      "id": "1",
       "article_key": "sample-1",
       "title": "示例文章",
       "account_name": "示例公众号",
@@ -38,5 +38,5 @@
       "evidence_text": "文章称该工具接入了具体工作流，并在 1 个场景中进行验证。"
     }
   ],
-  "report_markdown": "# 2026-06-16 晚报\n"
+  "report_markdown": "# 2026-06-16 晚报\n\n## 要点速览\n\n| 主题 | 摘要 | 来源 |\n| --- | --- | --- |\n| AI 应用 | 示例文章显示，AI 应用从单点能力展示转向具体工作流落地，当前证据仅覆盖样例来源中的一篇文章。 | [「1」](https://example.com/sample-1) |\n\n## 摘要速读\n\n### AI 应用\n\n样例来源只支持判断一个工作流落地案例，不能外推到整个行业趋势。\n\n- 文章称该工具接入了具体工作流，并在 1 个场景中进行验证。（来源：「1」）\n\n## 引用来源\n\n- 「1」 [示例文章](https://example.com/sample-1) - 示例公众号，发布时间：2026-06-16T18:00:00\n"
 }
