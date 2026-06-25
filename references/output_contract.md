@@ -2,12 +2,26 @@
 
 Use these JSON fields for D91 website rendering.
 
+## Top-level fields
+
+- `title`: `YYYY-MM-DD 早报/晚报`
+- `slot`: `morning` or `evening`
+- `window_start`: fixed slot start based on original article publish time, formatted as `YYYY-MM-DD HH:MM`
+- `window_end`: fixed slot end based on original article publish time, formatted as `YYYY-MM-DD HH:MM`
+- `generated_at`: actual generation time, formatted as `YYYY-MM-DD HH:MM`
+- `article_count`
+- `account_count`
+- `summary_table_json`
+- `details_json`
+- `sources_json`
+- `report_markdown`
+
 ## summary_table_json
 
 Array of objects:
 
 - `theme`: short factual topic name, preferably from article title/body terms.
-- `core_viewpoint`: concise summary content for the table cell. It may contain 3-8 short points for the theme, separated in Markdown/HTML rendering as line breaks. Merge similar viewpoints, remove repeated wording, preserve newly added information, and use concise declarative sentences.
+- `summary_points`: 3-8 concise point objects for the table cell, each as `{ "text": "...", "sources": ["1"] }`.
 - `sources`: array of pure numeric source ids as strings, such as `["1", "3"]`.
 
 ## details_json
@@ -15,7 +29,7 @@ Array of objects:
 Array of objects:
 
 - `theme`: same topic name used in the table when possible.
-- `summary`: objective synthesis from referenced article bodies, explaining the shared logic, differences, and evidence boundary. It must not be a stitched paragraph of raw source excerpts or a generic setup paragraph.
+- `summary`: objective synthesis from referenced article bodies.
 - `evidence_points`: array of `{ "text": "...", "sources": ["1"] }`.
 - `sources`: unique source ids used by this detail section.
 
@@ -27,11 +41,11 @@ Array of objects:
 - `article_key`
 - `title`
 - `account_name`
-- `publish_time`
-- `fetched_at`
+- `publish_time`: display as `YYYY-MM-DD HH:MM`
+- `fetched_at`: display as `YYYY-MM-DD HH:MM` when present
 - `url`
 - `section_label`
-- `evidence_text`: trimmed text used only for validation/debugging. The website may omit or hide it.
+- `evidence_text`: trimmed source text for review/debugging. The website may omit or hide it.
 
 ## report_markdown
 
@@ -41,7 +55,7 @@ Required section order:
 2. Metadata lines: report window, generated time, article count, account count.
 3. `## 要点速览`: Markdown table with `主题 | 摘要 | 来源`. Keep this table format; summary-content rules apply inside the `摘要` cell.
 4. `## 摘要速读`: one subsection per detail, each with cited evidence bullets.
-5. `## 引用来源`: source ids with original links.
+5. `## 引用来源`: ordered source list with original links.
 
 Citation display rules:
 
@@ -49,11 +63,9 @@ Citation display rules:
 - In Markdown prose and tables, display source ids with corner brackets, such as `「1」`.
 - In the `来源` column, each displayed citation number must be a Markdown link to the original article URL, such as `[「1」](https://...)`.
 - When multiple sources support one row, render each source number as its own original-article link, separated by `、`.
-
-## Prohibited Output
-
+- In `引用来源`, use normal ordered-list numbering and do not repeat corner-bracket source ids; display publish times as `YYYY-MM-DD HH:MM`.
 
 ## Window Semantics
 
-- `window_start` and `window_end` are fixed slot boundaries based on WeRSS `articles.published_at`.
-- `generated_at` records when the report was actually produced and may be later than `window_end`.
+- `window_start` and `window_end` are fixed slot boundaries based on the original article publish time (`articles.publish_time`).
+- `generated_at` records when the report was actually produced and may be later than `window_end`; format it as `YYYY-MM-DD HH:MM`.
