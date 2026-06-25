@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Collect WeRSS articles for a created_at window."""
+"""Collect WeRSS articles for an original publish-time window."""
 
 from __future__ import annotations
 
@@ -34,8 +34,8 @@ def main() -> int:
                    substr(a.content, 1, 120000) AS content_excerpt
             FROM articles a
             LEFT JOIN feeds f ON f.id = a.mp_id
-            WHERE a.created_at > ? AND a.created_at <= ?
-            ORDER BY a.created_at ASC, COALESCE(a.publish_time, 0) ASC
+            WHERE a.publish_time > ? AND a.publish_time <= ?
+            ORDER BY a.publish_time ASC, a.created_at ASC
             LIMIT ?
             """,
             (args.start, args.end, args.limit),
